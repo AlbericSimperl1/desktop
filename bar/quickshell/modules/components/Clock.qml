@@ -8,7 +8,7 @@ ColumnLayout {
     // ---- HIER DIT TOEVOEGEN ALS HET ER NIET STAAT ----
     property color fgColor: "#fff7e5"
     property color mutedColor: Qt.rgba(1, 0.95, 0.82, 0.78)
-    property string fontFamily: "JetBrainsMono Nerd Font Mono"
+    property string fontFamily: "mononoki"
 
     spacing: 0
 
@@ -21,8 +21,8 @@ ColumnLayout {
             text: clockRoot.timeStr.charAt(index)
             color: index < 2 ? clockRoot.fgColor : clockRoot.mutedColor
             font.family: clockRoot.fontFamily
-            font.pixelSize: 28
-            font.weight: 900
+            font.pixelSize: 25
+            font.weight: 600
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
             Layout.bottomMargin: index === 1 ? 8 : 0

@@ -66,13 +66,25 @@ hl.bind(mainMod .. " + Plus", function() zoomfunction(0.3) end, { repeating = tr
 hl.bind(mainMod .. " + code:82", function() zoomfunction(-0.3) end, { repeating = true })
 hl.bind(mainMod .. " + code:86", function() zoomfunction(0.3) end, { repeating = true })
 
+-- layout toggle
+hl.bind(mainMod .. " + SHIFT + T", function()
+    local ws = hl.get_active_workspace()
+    if not ws then
+        return
+    end
+    local new_layout = ws.tiled_layout == "dwindle" and "scrolling" or "dwindle"
+    hl.workspace_rule({
+        workspace = tostring(ws.id),
+        layout = new_layout,
+    })
+end)
+
 
 ------------------
 ---- LAUNCHER ----
 ------------------
 
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(launchPrefix .. TERMINAL))
-hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("rofi -show drun -theme ~/.config/rofi/config.rasi"))
 
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(launchPrefix .. FILE_MANAGER))
 hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd(launchPrefix .. EDITOR))
@@ -82,7 +94,9 @@ hl.bind(mainMod .. " + SHIFT + Return", hl.dsp.exec_cmd(launchPrefix .. BROWSER)
 hl.bind("CONTROL + SHIFT + Escape", hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(noctCall .. "settings-toggle"))
 hl.bind(mainMod .. " + X", hl.dsp.exec_cmd(noctCall .. "panel-toggle control-center"))
-hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher"))
+hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("~/.config/hypr/scripts/rofi.sh"))
+-- hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("rofi -show drun -theme ~/.config/rofi/config.rasi"))
+
 hl.bind(mainMod .. " + period", hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher /emo"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(noctCall .. "session lock"))
 hl.bind(mainMod .. " + ALT + C", hl.dsp.exec_cmd(noctCall .. "panel-toggle session"))

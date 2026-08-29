@@ -21,6 +21,11 @@
       "color": "#ffffff",
       "width": 2,
       "filled": false
+    },
+    "marker": {
+      "color": "#1a1a1a",
+      "width": 4,
+      "filled": false
     }
   }
 }

@@ -1,5 +1,4 @@
 // quickshell/shell.qml
-//@ pragma IconTheme MacTahoe-dark
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import Quickshell
@@ -9,12 +8,12 @@ import "./modules"
 import "./modules/components"
 import "./modules/bar"
 import "./modules/panels"
+import "./modules/services"
 
 ShellRoot {
     id: root
 
-    // ---- Kleuren & Instellingen ----
-    readonly property color barBg: '#30202227'
+    readonly property color barBg: '#50000207'
     readonly property color fg: '#fff7e5'
     readonly property color accent: '#ebd9b9'
     readonly property color borderCol: "#2cffffff"
@@ -22,15 +21,14 @@ ShellRoot {
 
     readonly property int sidebarWidth: 28
     readonly property int marginSize: 0
-    readonly property int barRadius: 8      // Radius voor de bar zelf
+    readonly property int barRadius: 0
 
     readonly property int panelMaxWidth: 480
-    readonly property int panelMaxHeight: 820
+    readonly property int panelMaxHeight: 570
     readonly property int panelMinHeight: 140
     readonly property int panelGap: 8
-    readonly property int panelRadius: 12   // Radius voor de popup panels
+    readonly property int panelRadius: 3
 
-    // MPRIS Active Player
     readonly property var activePlayer: {
         const players = Mpris.players.values;
         if (!players || players.length === 0)
@@ -45,23 +43,24 @@ ShellRoot {
     Variants {
         model: Quickshell.screens
 
+        NotificationToast {
+            screen: modelData
+        }
+
         PanelWindow {
             id: sidebarPanel
 
             required property var modelData
 
             property bool popoutOpen: false
-            property string activePanel: "none" // "media", "bluetooth" of "none"
+            property string activePanel: "none"
             property bool hovered: false
 
-            // Direct open of dicht (geen animatie)
             readonly property real openP: popoutOpen ? 1 : 0
-
             property real panelTopY: 120
 
-            readonly property real contentNeededHeight: activePanel === "media" ? mediaPanel.implicitHeight : activePanel === "bluetooth" ? bluetoothPanel.neededHeight : 0
-
-            // Hoogte van het paneel (geen animatie op panelH)
+            // Hoogteberekening uitgebreid met wifi
+            readonly property real contentNeededHeight: activePanel === "media" ? mediaPanel.implicitHeight : activePanel === "bluetooth" ? bluetoothPanel.neededHeight : activePanel === "notifications" ? notificationPanel.neededHeight : activePanel === "wifi" ? wifiPanel.neededHeight : 0
             readonly property real panelH: Math.min(root.panelMaxHeight, Math.max(root.panelMinHeight, contentNeededHeight + 16))
 
             onPanelHChanged: {
@@ -77,12 +76,11 @@ ShellRoot {
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
             color: "transparent"
 
-            margins.top: 5
-            margins.bottom: 5
-            margins.left: 4
+            margins.top: 0
+            margins.bottom: 0
+            margins.left: 0
 
-            exclusiveZone: root.sidebarWidth + 6
-
+            exclusiveZone: root.sidebarWidth + 2
             implicitWidth: root.sidebarWidth + root.panelGap + root.panelMaxWidth
 
             anchors {
@@ -91,9 +89,7 @@ ShellRoot {
                 left: true
             }
 
-            // Strakke, niet-geanimeerde maskers voor muisklikken
             mask: Region {
-                // Bar gebied
                 Region {
                     x: 0
                     y: 0
@@ -101,7 +97,6 @@ ShellRoot {
                     height: sidebarBg.height
                 }
 
-                // Panel gebied (alleen als hij open is)
                 Region {
                     x: sidebarPanel.popoutOpen ? (root.sidebarWidth + root.panelGap) : 0
                     y: sidebarPanel.popoutOpen ? sidebarPanel.panelTopY : 0
@@ -157,7 +152,6 @@ ShellRoot {
                     width: root.sidebarWidth + root.panelGap + root.panelMaxWidth + 4
                     height: parent.height
 
-                    // 1. Normale Rectangle voor de Bar zelf
                     Rectangle {
                         x: 0
                         y: 0
@@ -166,10 +160,9 @@ ShellRoot {
                         color: root.barBg
                         radius: root.barRadius
                         border.color: root.borderCol
-                        border.width: 1
+                        border.width: 0
                     }
 
-                    // 2. Inhoud van de Balk
                     SidebarContent {
                         id: sidebar
                         activePlayer: root.activePlayer
@@ -177,11 +170,12 @@ ShellRoot {
                         fgColor: root.fg
                         isMediaOpen: sidebarPanel.popoutOpen && sidebarPanel.activePanel === "media"
 
-                        onMediaClicked: sidebarPanel.togglePanel("media", clickY)
-                        onBluetoothClicked: sidebarPanel.togglePanel("bluetooth", clickY)
+                        onMediaClicked: clickY => sidebarPanel.togglePanel("media", clickY)
+                        onBluetoothClicked: clickY => sidebarPanel.togglePanel("bluetooth", clickY)
+                        onWifiClicked: clickY => sidebarPanel.togglePanel("wifi", clickY)
+                        onNotificationsClicked: clickY => sidebarPanel.togglePanel("notifications", clickY)
                     }
 
-                    // 3. Normale Rectangle voor het uitgeklapte Paneel
                     Rectangle {
                         x: root.sidebarWidth + root.panelGap
                         y: sidebarPanel.panelTopY
@@ -190,14 +184,13 @@ ShellRoot {
                         color: root.barBg
                         radius: root.panelRadius
                         border.color: root.borderCol
-                        border.width: 1
+                        border.width: 0
                         visible: sidebarPanel.popoutOpen
 
                         Item {
                             anchors.fill: parent
                             anchors.margins: 8
 
-                            // Mediapaneel
                             MediaPanel {
                                 id: mediaPanel
                                 anchors.fill: parent
@@ -208,7 +201,6 @@ ShellRoot {
                                 fontFamily: root.fontFamily
                             }
 
-                            // Bluetoothpaneel
                             BluetoothPanel {
                                 id: bluetoothPanel
                                 anchors.fill: parent
@@ -217,12 +209,29 @@ ShellRoot {
                                 accentColor: root.accent
                                 fontFamily: root.fontFamily
                             }
+
+                            WifiPanel {
+                                id: wifiPanel
+                                anchors.fill: parent
+                                visible: sidebarPanel.activePanel === "wifi"
+                                fgColor: root.fg
+                                accentColor: root.accent
+                                fontFamily: root.fontFamily
+                            }
+
+                            // NotificationPanel {
+                            //     id: notificationPanel
+                            //     anchors.fill: parent
+                            //     visible: sidebarPanel.activePanel === "notifications"
+                            //     fgColor: root.fg
+                            //     accentColor: root.accent
+                            //     fontFamily: root.fontFamily
+                            // }
                         }
                     }
                 }
             }
 
-            // Blur over de bar en eventueel geopende panel
             BackgroundEffect.blurRegion: Region {
                 Region {
                     x: 0

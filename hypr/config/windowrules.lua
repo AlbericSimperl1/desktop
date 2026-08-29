@@ -1,4 +1,4 @@
-local noctalia = require "noctalia"
+-- local noctalia = require "noctalia"
 -- Window rules wiki https://wiki.hypr.land/Configuring/Basics/Window-Rules/
 
 -- Generic floating position
