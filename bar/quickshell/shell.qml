@@ -60,7 +60,7 @@ ShellRoot {
             property real panelTopY: 120
 
             // Hoogteberekening uitgebreid met wifi
-            readonly property real contentNeededHeight: activePanel === "media" ? mediaPanel.implicitHeight : activePanel === "bluetooth" ? bluetoothPanel.neededHeight : activePanel === "notifications" ? notificationPanel.neededHeight : activePanel === "wifi" ? wifiPanel.neededHeight : 0
+            readonly property real contentNeededHeight: activePanel === "media" ? mediaPanel.implicitHeight : activePanel === "bluetooth" ? bluetoothPanel.neededHeight : activePanel === "notifications" ? notificationPanel.neededHeight : activePanel === "wifi" ? wifiPanel.neededHeight : activePanel === "power" ? powerPanel.neededHeight : 0 // <- Toegevoegd
             readonly property real panelH: Math.min(root.panelMaxHeight, Math.max(root.panelMinHeight, contentNeededHeight + 16))
 
             onPanelHChanged: {
@@ -174,6 +174,7 @@ ShellRoot {
                         onBluetoothClicked: clickY => sidebarPanel.togglePanel("bluetooth", clickY)
                         onWifiClicked: clickY => sidebarPanel.togglePanel("wifi", clickY)
                         onNotificationsClicked: clickY => sidebarPanel.togglePanel("notifications", clickY)
+                        onPowerClicked: clickY => sidebarPanel.togglePanel("power", clickY)
                     }
 
                     Rectangle {
@@ -219,14 +220,24 @@ ShellRoot {
                                 fontFamily: root.fontFamily
                             }
 
-                            // NotificationPanel {
-                            //     id: notificationPanel
-                            //     anchors.fill: parent
-                            //     visible: sidebarPanel.activePanel === "notifications"
-                            //     fgColor: root.fg
-                            //     accentColor: root.accent
-                            //     fontFamily: root.fontFamily
-                            // }
+                            NotificationPanel {
+                                id: notificationPanel
+                                anchors.fill: parent
+                                visible: sidebarPanel.activePanel === "notifications"
+                                fgColor: root.fg
+                                accentColor: root.accent
+                                fontFamily: root.fontFamily
+                            }
+
+                            // Nieuw PowerPanel invoegen:
+                            PowerPanel {
+                                id: powerPanel
+                                anchors.fill: parent
+                                visible: sidebarPanel.activePanel === "power"
+                                fgColor: root.fg
+                                accentColor: root.accent
+                                fontFamily: root.fontFamily
+                            }
                         }
                     }
                 }
