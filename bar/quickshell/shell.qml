@@ -19,7 +19,7 @@ ShellRoot {
     readonly property color borderCol: "#2cffffff"
     readonly property string fontFamily: "mononoki"
 
-    readonly property int sidebarWidth: 28
+    readonly property int sidebarWidth: 24
     readonly property int marginSize: 0
     readonly property int barRadius: 0
 

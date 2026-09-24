@@ -23,13 +23,13 @@ Item {
     signal notificationsClicked(real clickY)
     signal powerClicked(real clickY)
 
-    width: 28
+    width: 24
     implicitWidth: barRoot.width
     anchors.top: parent.top
     anchors.bottom: parent.bottom
     anchors.left: parent.left
-    anchors.topMargin: 16
-    anchors.bottomMargin: 16
+    anchors.topMargin: 8
+    anchors.bottomMargin: 5
 
     Workspaces {
         anchors.top: parent.top
