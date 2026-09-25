@@ -101,7 +101,9 @@ hl.bind(mainMod .. " + period", hl.dsp.exec_cmd(noctCall .. "panel-toggle launch
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(noctCall .. "session lock"))
 hl.bind(mainMod .. " + ALT + C", hl.dsp.exec_cmd(noctCall .. "panel-toggle session"))
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(noctCall .. "power-cycle"))
-
+hl.bind("SUPER + g", function()
+    hl.plugin.scrolloverview.overview("toggle all")
+end)
 
 ---------------------------
 ---- HARDWARE CONTROLS ----
@@ -124,6 +126,9 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true 
 -- Brightness
 hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd(noctCall .. "brightness-up"), { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(noctCall .. "brightness-down"), { locked = true, repeating = true })
+
+hl.bind(mainMod .. " + SHIFT + U", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-monitor.sh DP-3"))
+hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-monitor.sh HDMI-A-1"))
 
 -------------------
 ---- UTILITIES ----

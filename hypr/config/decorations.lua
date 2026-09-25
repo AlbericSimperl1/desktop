@@ -9,7 +9,7 @@ hl.config({
             bottom = 3,
             left = 2
         },
-        border_size = 2,
+        border_size = 0,
         extend_border_grab_area = 10,
         resize_on_border = false,
         col = {
@@ -22,7 +22,7 @@ hl.config({
         dim_special = 0.3,
         rounding = 2,
         active_opacity = 0.92,
-        inactive_opacity = 0.85,
+        inactive_opacity = 0.92,
         fullscreen_opacity = 1,
         blur = {
             size = 3,
