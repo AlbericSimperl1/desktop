@@ -39,7 +39,7 @@ Item {
         text: brightnessWidgetRoot.icon
         color: brightnessWidgetRoot.nightlightActive ? brightnessWidgetRoot.accentColor : brightnessWidgetRoot.fgColor
         font.family: brightnessWidgetRoot.fontFamily
-        font.pixelSize: 20
+        font.pixelSize: 23
 
         Behavior on color {
             ColorAnimation {
@@ -59,7 +59,7 @@ Item {
                 brightnessWidgetRoot.clicked();
             } else if (mouse.button === Qt.RightButton) {
                 brightnessWidgetRoot.nightlightActive = !brightnessWidgetRoot.nightlightActive;
-                Quickshell.execDetached(["noctalia", "msg", "nightlight-toggle"]);
+                Quickshell.execDetached(["noctalia", "msg", "nightlight-force-toggle"]);
                 brightnessWidgetRoot.rightClicked();
             }
         }
