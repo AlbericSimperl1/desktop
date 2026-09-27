@@ -171,6 +171,40 @@ Item {
         //     }
         // }
 
+        //         Text {
+        //             id: brightnessWidget
+        //             text: "󰃠"
+        //             color: barRoot.fgColor
+        //             font.family: barRoot.fontFamily
+        //             font.pixelSize: 20
+        //             Layout.alignment: Qt.AlignHCenter
+        //
+        //             MouseArea {
+        //                 anchors.fill: parent
+        //                 acceptedButtons: Qt.LeftButton | Qt.RightButton
+        //                 cursorShape: Qt.PointingHandCursor
+        //
+        //                 onClicked: mouse => {
+        //                     if (mouse.button === Qt.LeftButton) {
+        //                         let mapped = brightnessWidget.mapToItem(barRoot.parent, 0, 0);
+        //                         barRoot.brightnessClicked(mapped.y + brightnessWidget.height / 2);
+        //                     } else if (mouse.button === Qt.RightButton) {
+        //                         Quickshell.execDetached(["noctalia", "msg", "nightlight-force-toggle"]);
+        //                     }
+        //                 }
+        //
+        //                 onWheel: wheel => {
+        //                     if (wheel.angleDelta.y > 0) {
+        //                         Quickshell.execDetached(["noctalia", "msg", "brightness-up"]);
+        //                     } else if (wheel.angleDelta.y < 0) {
+        //                         Quickshell.execDetached(["noctalia", "msg", "brightness-down"]);
+        //                     }
+        //                 }
+        //             }
+        //         }
+
+        Brightness {}
+
         Text {
             id: powerWidget // <- ID toevoegen
             text: "⏻"

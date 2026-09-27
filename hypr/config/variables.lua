@@ -4,7 +4,7 @@ TERMINAL        = "ghostty"
 FILE_MANAGER    = "nautilus"
 BROWSER         = "zen-browser"
 EDITOR          = "zeditor"
-CALCULATOR      = "gnome-calculator"
+CALCULATOR      = "noctalia msg panel-toggle samuelskovbakke/calculator-plus:panel"
 
 -- Monitors
 MONITOR1        = ""
