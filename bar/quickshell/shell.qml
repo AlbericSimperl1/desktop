@@ -24,7 +24,7 @@ ShellRoot {
     readonly property int barRadius: 0
 
     readonly property int panelMaxWidth: 480
-    readonly property int panelMaxHeight: 570
+    readonly property int panelMaxHeight: 650
     readonly property int panelMinHeight: 140
     readonly property int panelGap: 8
     readonly property int panelRadius: 3

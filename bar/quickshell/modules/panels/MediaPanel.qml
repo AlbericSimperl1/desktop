@@ -1,16 +1,18 @@
+// MediaPanel.qml
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Mpris
+import Quickshell.Services.Pipewire
 import Qt5Compat.GraphicalEffects
 
 Item {
     id: root
 
     implicitWidth: 520
-    implicitHeight: 580
+    implicitHeight: 570
 
     property color fgColor: "#fff7e5"
     property color mutedColor: Qt.rgba(1, 0.95, 0.82, 0.78)
@@ -19,6 +21,16 @@ Item {
     property string fontFamily: "mononoki"
     property var player
     property var cavaBars: []
+
+    // -------------------------------------------------------------
+    // PIPEWIRE AUDIO OUTPUT DEVICE
+    // -------------------------------------------------------------
+    readonly property string audioDeviceName: {
+        const sink = Pipewire.defaultAudioSink;
+        if (!sink)
+            return "Default Output";
+        return sink.description || sink.nickname || sink.name || "Default Output";
+    }
 
     // -------------------------------------------------------------
     // MPRIS LOGICA
@@ -53,7 +65,7 @@ Item {
     property real trackPosition: 0
 
     // -------------------------------------------------------------
-    // BAR ICON COMPONENT (Noctalia-style Album Art voor in je statusbar)
+    // BAR ICON COMPONENT
     // -------------------------------------------------------------
     property Component barItem: Component {
         Rectangle {
@@ -120,7 +132,7 @@ Item {
     Process {
         id: cavaProc
         running: root.isPlaying
-        command: ["bash", "-lc", "cfg=$(mktemp); " + "printf '%s\\n' '[general]' 'bars = 70' 'framerate = 60' 'sensitivity = 160' " + "'[input]' 'method = pipewire' '[output]' 'method = raw' 'raw_target = /dev/stdout' " + "'data_format = ascii' 'ascii_max_range = 12' 'bar_delimiter = 59' 'frame_delimiter = 10' 'channels = mono' " + "'[smoothing]' 'integral = 70' 'monstercat = 1' > \"$cfg\"; " + "cava -p \"$cfg\"; code=$?; rm -f \"$cfg\"; exit $code"]
+        command: ["bash", "-lc", "cfg=$(mktemp); " + "printf '%s\\n' '[general]' 'bars = 86' 'framerate = 60' 'sensitivity = 160' " + "'[input]' 'method = pipewire' '[output]' 'method = raw' 'raw_target = /dev/stdout' " + "'data_format = ascii' 'ascii_max_range = 12' 'bar_delimiter = 59' 'frame_delimiter = 10' 'channels = mono' " + "'[smoothing]' 'integral = 70' 'monstercat = 1' > \"$cfg\"; " + "cava -p \"$cfg\"; code=$?; rm -f \"$cfg\"; exit $code"]
 
         stdout: SplitParser {
             onRead: line => {
@@ -136,7 +148,7 @@ Item {
     }
 
     // -------------------------------------------------------------
-    // HOOFDINDELING (Sleek layout zonder achtergrondkaarten)
+    // HOOFDINDELING
     // -------------------------------------------------------------
     RowLayout {
         anchors.fill: parent
@@ -147,15 +159,14 @@ Item {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            spacing: 10
+            spacing: 20
 
-            // Album Art (met afgeronde hoeken via OpacityMask)
+            // Album Art
             Item {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: 335
                 Layout.preferredHeight: 335
 
-                // 1. Bron-afbeelding (verborgen, dient als input)
                 Image {
                     id: albumArt
                     anchors.fill: parent
@@ -165,15 +176,13 @@ Item {
                     visible: false
                 }
 
-                // 2. Het masker dat de ronding van de hoeken bepaalt
                 Rectangle {
                     id: maskRect
                     anchors.fill: parent
-                    radius: 22 // Pas hier de hoeveelheid afronding aan
+                    radius: 5
                     visible: false
                 }
 
-                // 3. De afgeronde afbeelding
                 OpacityMask {
                     anchors.fill: parent
                     source: albumArt
@@ -181,10 +190,9 @@ Item {
                     visible: albumArt.status === Image.Ready && root.artUrl !== ""
                 }
 
-                // 4. Fallback wanneer er geen hoesje is
                 Rectangle {
                     anchors.fill: parent
-                    radius: 22
+                    radius: 5
                     color: "#1a1b26"
                     visible: albumArt.status !== Image.Ready || root.artUrl === ""
 
@@ -200,7 +208,7 @@ Item {
             // Track Info
             ColumnLayout {
                 Layout.fillWidth: true
-                spacing: 2
+                spacing: 6
 
                 Text {
                     text: root.trackTitle
@@ -222,9 +230,9 @@ Item {
                 }
             }
 
-            Item {
-                Layout.fillHeight: true
-            }
+            // Item {
+            //     Layout.fillHeight: true
+            // }
 
             // Progress Bar
             Rectangle {
@@ -253,9 +261,10 @@ Item {
                 }
             }
 
-            // Knoppenbalk (Apple-style: grote, strakke iconen zonder achtergrond)
+            // Knoppenbalk (Aangepast: negatieve topMargin trekt de knoppen omhoog richting de progress bar)
             RowLayout {
-                Layout.alignment: Qt.AlignLeft
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: -32
                 spacing: 0
 
                 // Shuffle
@@ -264,7 +273,7 @@ Item {
                     color: (root.activePlayer && root.activePlayer.shuffle) ? root.accentColor : "#888888"
                     opacity: (root.activePlayer && root.activePlayer.canControl && root.activePlayer.shuffleSupported) ? 1 : 0.35
                     font.family: root.fontFamily
-                    font.pixelSize: 50
+                    font.pixelSize: 42
                     Layout.alignment: Qt.AlignVCenter
 
                     MouseArea {
@@ -274,6 +283,7 @@ Item {
                             root.activePlayer.shuffle = !root.activePlayer.shuffle
                     }
                 }
+
                 // Vorige nummer
                 Text {
                     text: "\uf048"
@@ -281,7 +291,7 @@ Item {
                     font.family: root.fontFamily
                     font.pixelSize: 85
                     Layout.alignment: Qt.AlignVCenter
-                    Layout.leftMargin: 35
+                    Layout.leftMargin: 30
 
                     MouseArea {
                         anchors.fill: parent
@@ -291,7 +301,7 @@ Item {
                     }
                 }
 
-                // Play / Pause (Centraal & Extra groot)
+                // Play / Pause
                 Text {
                     text: root.isPlaying ? "\uf04c" : "\uf04b"
                     color: root.fgColor
@@ -316,7 +326,7 @@ Item {
                     font.pixelSize: 85
                     Layout.alignment: Qt.AlignVCenter
                     Layout.leftMargin: 35
-                    Layout.rightMargin: 45
+                    Layout.rightMargin: 30
 
                     MouseArea {
                         anchors.fill: parent
@@ -332,7 +342,7 @@ Item {
                     color: (root.activePlayer && root.activePlayer.loopState !== MprisLoopState.None) ? root.accentColor : "#888888"
                     opacity: (root.activePlayer && root.activePlayer.canControl && root.activePlayer.loopSupported) ? 1 : 0.35
                     font.family: root.fontFamily
-                    font.pixelSize: 50
+                    font.pixelSize: 40
                     Layout.alignment: Qt.AlignVCenter
                     Layout.leftMargin: 0
 
@@ -345,8 +355,8 @@ Item {
                         font.bold: true
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
-                        anchors.rightMargin: -4
-                        anchors.bottomMargin: 5
+                        anchors.rightMargin: -7
+                        anchors.bottomMargin: 8
                     }
 
                     MouseArea {
@@ -365,9 +375,44 @@ Item {
                     }
                 }
             }
+
+            // Audio Output Device Badge (Aangepast: dichter op de knoppen + grotere dimensions & font)
+            Rectangle {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: -27
+                implicitWidth: deviceRow.implicitWidth + 30
+                implicitHeight: deviceRow.implicitHeight + 12
+                radius: 5
+                color: "#20ffffff"
+                border.color: "#30ffffff"
+                border.width: 1
+
+                RowLayout {
+                    id: deviceRow
+                    anchors.centerIn: parent
+                    spacing: 8
+
+                    Text {
+                        text: "\uf028"
+                        color: root.accentColor
+                        font.family: root.fontFamily
+                        font.pixelSize: 20
+                    }
+
+                    Text {
+                        text: root.audioDeviceName
+                        color: root.fgColor
+                        font.family: root.fontFamily
+                        font.pixelSize: 15
+                        font.bold: true
+                        elide: Text.ElideRight
+                        Layout.maximumWidth: 300
+                    }
+                }
+            }
         }
 
-        // RECHTER KOLOM: CAVA Visualizer (Volledige Hoogte - 52 Bars)
+        // RECHTER KOLOM: CAVA Visualizer
         Item {
             Layout.preferredWidth: 85
             Layout.fillHeight: true
@@ -377,13 +422,13 @@ Item {
                 spacing: 4
 
                 Repeater {
-                    model: 70
+                    model: 78
 
                     delegate: Rectangle {
                         anchors.horizontalCenter: parent.horizontalCenter
 
-                        property real distFromCenter: Math.abs(index - 35.5)
-                        property int mappedIdx: Math.min(71, Math.floor(distFromCenter * 2))
+                        property real distFromCenter: Math.abs(index - 40.5)
+                        property int mappedIdx: Math.min(81, Math.floor(distFromCenter * 2))
 
                         property real val: (root.cavaBars && root.cavaBars.length > mappedIdx) ? root.cavaBars[mappedIdx] : 0
 
