@@ -47,8 +47,8 @@ entry {
     text-color: #ffffff;
 }
 listview {
-    columns: 6;
-    lines: 4;
+    columns: 5;
+    lines: 5;
     cycle: true;
     scrollbar: true;
     flow: horizontal;

@@ -36,6 +36,11 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
+    // Ws2 {
+    //     anchors.top: parent.top
+    //     anchors.horizontalCenter: parent.horizontalCenter
+    // }
+
     Clock {
         id: clock
         anchors.centerIn: parent
