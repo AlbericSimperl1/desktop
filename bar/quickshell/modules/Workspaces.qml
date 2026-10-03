@@ -119,24 +119,11 @@ ColumnLayout {
 
             property real targetHeight: isActive ? 50 : (hasWindows ? 20 : 10)
 
-            // Behavior on targetHeight {
-            //     NumberAnimation {
-            //         duration: 100
-            //         easing.type: Easing.OutCubic
-            //     }
-            // }
-
             Layout.preferredWidth: 7
             Layout.preferredHeight: targetHeight
             Layout.alignment: Qt.AlignHCenter
             radius: 100
             color: isActive ? "#99ffffff" : (hovered ? Qt.rgba(1, 1, 1, 0.55) : Qt.rgba(1, 1, 1, 0.25))
-
-            // Behavior on color {
-            //     ColorAnimation {
-            //         duration: 100
-            //     }
-            // }
 
             MouseArea {
                 anchors.fill: parent
@@ -144,7 +131,7 @@ ColumnLayout {
                 onEntered: pill.hovered = true
                 onExited: pill.hovered = false
 
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.scroll
                 onClicked: mouse => {
                     if (mouse.button === Qt.LeftButton) {
                         dispatchProcess.command = ["hyprctl", "dispatch", "hl.dsp.focus({workspace = " + pill.wsId.toString() + "})"];

@@ -67,9 +67,4 @@
       "ctrl-b": "project_panel::Toggle",
     },
   },
-  {
-    "bindings": {
-      "µ": ["workspace::SendKeystrokes", "escape"],
-    },
-  },
 ]

@@ -104,6 +104,7 @@ hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd(noctCall .. "power-cycle"))
 hl.bind("SUPER + g", function()
     hl.plugin.scrolloverview.overview("toggle all")
 end)
+hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("spotify"))
 
 ---------------------------
 ---- HARDWARE CONTROLS ----

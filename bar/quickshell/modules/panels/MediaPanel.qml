@@ -220,13 +220,25 @@ Item {
                     Layout.fillWidth: true
                 }
 
-                Text {
-                    text: root.trackArtist
-                    color: root.mutedColor
-                    font.family: root.fontFamily
-                    font.pixelSize: 17
-                    elide: Text.ElideRight
+                RowLayout {
                     Layout.fillWidth: true
+
+                    Text {
+                        text: root.trackArtist
+                        color: root.mutedColor
+                        font.family: root.fontFamily
+                        font.pixelSize: 16
+                        elide: Text.ElideRight
+                        Layout.fillWidth: true
+                    }
+
+                    Text {
+                        Layout.alignment: Qt.AlignRight
+                        text: root.formatTime(root.trackPosition) + " / " + root.formatTime(root.trackLength)
+                        color: root.mutedColor
+                        font.family: root.fontFamily
+                        font.pixelSize: 18
+                    }
                 }
             }
 

@@ -31,15 +31,15 @@ Item {
     anchors.topMargin: 8
     anchors.bottomMargin: 5
 
-    Workspaces {
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-    }
-
-    // Ws2 {
+    // Workspaces {
     //     anchors.top: parent.top
     //     anchors.horizontalCenter: parent.horizontalCenter
     // }
+
+    Ws2 {
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
 
     Clock {
         id: clock

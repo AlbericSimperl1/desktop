@@ -35,19 +35,19 @@ ColumnLayout {
             property bool hovered: false
 
             // Vierkante afgeronde knopjes
-            implicitWidth: 20
-            implicitHeight: 20
+            implicitWidth: 18
+            implicitHeight: 22
             radius: 6
 
             Layout.alignment: Qt.AlignHCenter
 
             color: {
                 if (isActive) {
-                    return Qt.rgba(0, 0, 0, 0.25); // Actieve achtergrond
+                    return Qt.rgba(0, 0, 0, 0.40); // Actieve achtergrond
                 } else if (hovered) {
-                    return Qt.rgba(0, 0, 0, 0.16);
+                    return Qt.rgba(0, 0, 0, 0.25);
                 } else if (hasWindows) {
-                    return Qt.rgba(0, 0, 0, 0.12); // Achtergrond voor geopende vensters
+                    return Qt.rgba(0, 0, 0, 0.15); // Achtergrond voor geopende vensters
                 } else {
                     return "transparent"; // Geen box voor lege workspaces
                 }
@@ -64,7 +64,7 @@ ColumnLayout {
                 anchors.centerIn: parent
                 text: pill.displayText
                 font.pixelSize: 13
-                font.bold: pill.isActive
+                // font.bold: true
 
                 color: {
                     if (pill.isActive) {
