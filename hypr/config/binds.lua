@@ -48,17 +48,28 @@ end
 -- Move & Resize with mouse
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag())
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize())
--- hl.bind("SUPER +SHIFT + TAB", function()
---     hl.plugin.overview.toggle()
--- end, { description = "Toggle Hyprspace overview" })
--- hl.bind("SUPER +SHIFT + TAB", hl.dsp.exec_cmd("~/.config/hypr/scripts/hyprspace.sh"))
-hl.bind("SUPER + SHIFT + TAB", function()
-    -- 1. Toggle de zichtbaarheid van je Quickshell bar
-    os.execute("quickshell msg 'bar.visible = !bar.visible' &")
 
-    -- 2. Toggle Hyprspace overview
-    hl.plugin.overview.toggle()
-end, { description = "Toggle Hyprspace overview & Quickshell bar" })
+
+
+local last_super_press = 0
+local double_tap_window = 0.015
+local overview_is_open = false
+
+hl.bind("Super_L", function()
+    local current_time = os.clock()
+
+    if (current_time - last_super_press) < double_tap_window then
+        -- Toggle Hyprspace overview
+        hl.plugin.overview.toggle()
+
+        -- Update status & stuur expliciet 'open' of 'close' naar Quickshell
+        overview_is_open = not overview_is_open
+
+        last_super_press = 0
+    else
+        last_super_press = current_time
+    end
+end, { description = "Toggle Hyprspace overview op dubbele Super-klik" })
 
 -- Zoom
 local function zoomfunction(value)

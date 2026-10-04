@@ -4,29 +4,25 @@ import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
 
-ColumnLayout {
-    id: wsColumn
+RowLayout {
+    id: wsRow
     spacing: 8
 
-    Layout.alignment: Qt.AlignHCenter
+    Layout.alignment: Qt.AlignVCenter
 
-    // 10 workspaces (1 t/m 9 en 0) zoals op de afbeelding
-    property int persistentCount: 6
+    property int persistentCount: 9
 
     Repeater {
-        model: wsColumn.persistentCount
+        model: wsRow.persistentCount
         delegate: Rectangle {
             id: pill
             required property int index
             property int wsId: index + 1
 
-            // Nummering weergeven: 1 t/m 9, en '0' voor de 10e workspace
             property string displayText: wsId === 10 ? "0" : wsId.toString()
 
-            // 1. Is dit de actieve workspace?
             property bool isActive: Hyprland.focusedWorkspace !== null && Hyprland.focusedWorkspace.id === wsId
 
-            // 2. Staan er geopende vensters op dit werkblad?
             property bool hasWindows: {
                 if (!Hyprland.toplevels)
                     return false;
@@ -35,22 +31,21 @@ ColumnLayout {
 
             property bool hovered: false
 
-            // Vierkante afgeronde knopjes
-            implicitWidth: 22
-            implicitHeight: 26
+            implicitWidth: 24
+            implicitHeight: 24
             radius: 6
 
-            Layout.alignment: Qt.AlignHCenter
+            Layout.alignment: Qt.AlignVCenter
 
             color: {
                 if (isActive) {
-                    return Qt.rgba(255, 255, 255, 0.25); // Actieve achtergrond
+                    return Qt.rgba(255, 255, 255, 0.25);
                 } else if (hovered) {
                     return Qt.rgba(255, 255, 255, 0.17);
                 } else if (hasWindows) {
-                    return Qt.rgba(255, 255, 255, 0.12); // Achtergrond voor geopende vensters
+                    return Qt.rgba(255, 255, 255, 0.12);
                 } else {
-                    return "transparent"; // Geen box voor lege workspaces
+                    return "transparent";
                 }
             }
 
@@ -60,20 +55,12 @@ ColumnLayout {
                 }
             }
 
-            // Het nummer in de workspace
             Text {
                 anchors.centerIn: parent
                 text: pill.displayText
                 font.pixelSize: 18
-                // font.bold: true
 
-                color: {
-                    if (pill.isActive) {
-                        return "#fff7e5";
-                    } else {
-                        return "#d8dee9";
-                    }
-                }
+                color: pill.isActive ? "#fff7e5" : "#d8dee9"
 
                 Behavior on color {
                     ColorAnimation {

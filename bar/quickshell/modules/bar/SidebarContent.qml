@@ -23,7 +23,7 @@ Item {
     signal notificationsClicked(real clickY)
     signal powerClicked(real clickY)
 
-    width: 24
+    width: 4 + 34
     implicitWidth: barRoot.width
     anchors.top: parent.top
     anchors.bottom: parent.bottom
@@ -57,8 +57,8 @@ Item {
         Item {
             id: mediaWidget
             Layout.alignment: Qt.AlignHCenter
-            implicitWidth: 16
-            implicitHeight: 16
+            implicitWidth: 22
+            implicitHeight: 22
 
             readonly property string artUrl: barRoot.activePlayer && barRoot.activePlayer.trackArtUrl ? barRoot.activePlayer.trackArtUrl : ""
 
@@ -95,7 +95,7 @@ Item {
                     text: "󰎈"
                     color: barRoot.fgColor
                     font.family: barRoot.fontFamily
-                    font.pixelSize: 23
+                    font.pixelSize: 28 + 3
                 }
             }
 
@@ -114,7 +114,7 @@ Item {
             text: ""
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
-            font.pixelSize: 20
+            font.pixelSize: 25 + 3
             Layout.alignment: Qt.AlignHCenter
 
             MouseArea {
@@ -132,7 +132,7 @@ Item {
             text: "󰤨"
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
-            font.pixelSize: 19
+            font.pixelSize: 24 + 3
             Layout.alignment: Qt.AlignHCenter
 
             MouseArea {
@@ -215,7 +215,7 @@ Item {
             text: "⏻"
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
-            font.pixelSize: 20
+            font.pixelSize: 25 + 3
             Layout.alignment: Qt.AlignHCenter
 
             MouseArea {

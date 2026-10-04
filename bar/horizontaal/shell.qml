@@ -1,4 +1,3 @@
-// quickshell/shell.qml
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import Quickshell
@@ -6,19 +5,18 @@ import Quickshell.Io
 import Quickshell.Hyprland
 import Quickshell.Services.Mpris
 import Quickshell.Wayland
-import "./modules"
-import "./modules/components"
-import "./modules/bar"
-import "./modules/panels"
-import "./modules/services"
+
+// import "./modules"
+// import "./modules/components"
+// import "./modules/bar"
+// import "./modules/panels"
+// import "./modules/services"
 
 ShellRoot {
     id: root
 
-    // Zichtbaarheid van de sidebar
-    property bool overviewActive: false
+    property bool overviewActive: true
 
-    // Ontvang expliciete status-updates via IPC
     IpcHandler {
         target: "overview"
 
@@ -41,7 +39,7 @@ ShellRoot {
     readonly property color borderCol: "#2cffffff"
     readonly property string fontFamily: "mononoki"
 
-    readonly property int sidebarWidth: 34
+    readonly property int barHeight: 34
     readonly property int marginSize: 0
     readonly property int barRadius: 0
 
@@ -81,7 +79,7 @@ ShellRoot {
             property bool hovered: false
 
             readonly property real openP: popoutOpen ? 1 : 0
-            property real panelTopY: 120
+            property real panelLeftX: 120
 
             onVisibleChanged: {
                 if (!visible) {
@@ -93,14 +91,6 @@ ShellRoot {
             readonly property real contentNeededHeight: activePanel === "media" ? mediaPanel.implicitHeight : activePanel === "bluetooth" ? bluetoothPanel.neededHeight : activePanel === "notifications" ? notificationPanel.neededHeight : activePanel === "wifi" ? wifiPanel.neededHeight : activePanel === "power" ? powerPanel.neededHeight : 0
             readonly property real panelH: Math.min(root.panelMaxHeight, Math.max(root.panelMinHeight, contentNeededHeight + 16))
 
-            onPanelHChanged: {
-                if (popoutOpen) {
-                    const inset = root.barRadius + root.panelRadius + 2;
-                    const maxTop = sidebarBg.height - inset - panelH;
-                    panelTopY = Math.max(inset, Math.min(panelTopY, maxTop));
-                }
-            }
-
             screen: modelData
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
@@ -109,27 +99,28 @@ ShellRoot {
             margins.top: 0
             margins.bottom: 0
             margins.left: 0
+            margins.right: 0
 
-            exclusiveZone: root.sidebarWidth + 2
-            implicitWidth: root.sidebarWidth + root.panelGap + root.panelMaxWidth
+            exclusiveZone: root.barHeight + 2
+            implicitHeight: root.barHeight + root.panelGap + root.panelMaxHeight
 
             anchors {
                 top: true
-                bottom: true
                 left: true
+                right: true
             }
 
             mask: Region {
                 Region {
                     x: 0
                     y: 0
-                    width: root.sidebarWidth
-                    height: sidebarBg.height
+                    width: sidebarBg.width
+                    height: root.barHeight
                 }
 
                 Region {
-                    x: sidebarPanel.popoutOpen ? (root.sidebarWidth + root.panelGap) : 0
-                    y: sidebarPanel.popoutOpen ? sidebarPanel.panelTopY : 0
+                    x: sidebarPanel.popoutOpen ? sidebarPanel.panelLeftX : 0
+                    y: sidebarPanel.popoutOpen ? (root.barHeight + root.panelGap) : 0
                     width: sidebarPanel.popoutOpen ? root.panelMaxWidth : 0
                     height: sidebarPanel.popoutOpen ? sidebarPanel.panelH : 0
                 }
@@ -153,7 +144,7 @@ ShellRoot {
                     closeTimer.start();
             }
 
-            function togglePanel(type, clickY) {
+            function togglePanel(type, clickX) {
                 if (popoutOpen && activePanel === type) {
                     popoutOpen = false;
                     activePanel = "none";
@@ -163,8 +154,8 @@ ShellRoot {
                 activePanel = type;
 
                 const inset = root.barRadius + root.panelRadius + 2;
-                const maxTop = sidebarBg.height - inset - panelH;
-                panelTopY = Math.max(inset, Math.min(clickY - panelH / 2, maxTop));
+                const maxLeft = sidebarBg.width - inset - root.panelMaxWidth;
+                panelLeftX = Math.max(inset, Math.min(clickX - root.panelMaxWidth / 2, maxLeft));
                 popoutOpen = true;
             }
 
@@ -179,14 +170,14 @@ ShellRoot {
 
                 Item {
                     id: sidebarBg
-                    width: root.sidebarWidth + root.panelGap + root.panelMaxWidth + 4
+                    width: parent.width
                     height: parent.height
 
                     Rectangle {
                         x: 0
                         y: 0
-                        width: root.sidebarWidth
-                        height: parent.height
+                        width: parent.width
+                        height: root.barHeight
                         color: root.barBg
                         radius: root.barRadius
                         border.color: root.borderCol
@@ -200,16 +191,16 @@ ShellRoot {
                         fgColor: root.fg
                         isMediaOpen: sidebarPanel.popoutOpen && sidebarPanel.activePanel === "media"
 
-                        onMediaClicked: clickY => sidebarPanel.togglePanel("media", clickY)
-                        onBluetoothClicked: clickY => sidebarPanel.togglePanel("bluetooth", clickY)
-                        onWifiClicked: clickY => sidebarPanel.togglePanel("wifi", clickY)
-                        onNotificationsClicked: clickY => sidebarPanel.togglePanel("notifications", clickY)
-                        onPowerClicked: clickY => sidebarPanel.togglePanel("power", clickY)
+                        onMediaClicked: clickX => sidebarPanel.togglePanel("media", clickX)
+                        onBluetoothClicked: clickX => sidebarPanel.togglePanel("bluetooth", clickX)
+                        onWifiClicked: clickX => sidebarPanel.togglePanel("wifi", clickX)
+                        onNotificationsClicked: clickX => sidebarPanel.togglePanel("notifications", clickX)
+                        onPowerClicked: clickX => sidebarPanel.togglePanel("power", clickX)
                     }
 
                     Rectangle {
-                        x: root.sidebarWidth + root.panelGap
-                        y: sidebarPanel.panelTopY
+                        x: sidebarPanel.panelLeftX
+                        y: root.barHeight + root.panelGap
                         width: root.panelMaxWidth
                         height: sidebarPanel.panelH
                         color: root.panelBg
@@ -276,13 +267,13 @@ ShellRoot {
                 Region {
                     x: 0
                     y: 0
-                    width: root.sidebarWidth
-                    height: sidebarBg.height
+                    width: sidebarBg.width
+                    height: root.barHeight
                 }
 
                 Region {
-                    x: sidebarPanel.popoutOpen ? (root.sidebarWidth + root.panelGap) : 0
-                    y: sidebarPanel.popoutOpen ? sidebarPanel.panelTopY : 0
+                    x: sidebarPanel.popoutOpen ? sidebarPanel.panelLeftX : 0
+                    y: sidebarPanel.popoutOpen ? (root.barHeight + root.panelGap) : 0
                     width: sidebarPanel.popoutOpen ? root.panelMaxWidth : 0
                     height: sidebarPanel.popoutOpen ? sidebarPanel.panelH : 0
                 }

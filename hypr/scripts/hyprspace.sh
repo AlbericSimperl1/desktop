@@ -1,9 +1,22 @@
 #!/usr/bin/env bash
 
-# Toggle Quickshell via ipc/signal (of een custom Quickshell target)
-# Als Quickshell runt als proces, kun je een signaal of IPC-call sturen,
-# of de layer/window hide command gebruiken.
-quickshell msg "bar.visible = !bar.visible" 2>/dev/null || true
+# Tijdvenster waarin de tweede klik moet vallen (in milliseconden)
+DOUBLE_CLICK_TIME=300
+CACHE_FILE="/tmp/last_super_press"
 
-# Toggle Hyprspace overview
-hyprctl dispatch overview:toggle
+CURRENT_TIME=$(date +%s%3N)
+
+if [ -f "$CACHE_FILE" ]; then
+    LAST_TIME=$(cat "$CACHE_FILE")
+    DIFF=$((CURRENT_TIME - LAST_TIME))
+
+    if [ $DIFF -lt $DOUBLE_CLICK_TIME ]; then
+        # Binnen de tijd: voer de Lua-binding / Hyprspace toggle uit
+        rm "$CACHE_FILE"
+        hyprctl dispatch "plugin:overview:toggle" 2>/dev/null || hyprctl dispatch "overview:toggle"
+        exit 0
+    fi
+fi
+
+# Sla de huidige tijd op
+echo "$CURRENT_TIME" > "$CACHE_FILE"

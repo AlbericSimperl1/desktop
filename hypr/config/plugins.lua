@@ -22,17 +22,20 @@ hl.config({
             panelColor = "rgba(0, 5, 8, 0.0)",
             panelBorderColor = "rgba(49, 50, 68, 0.0)",
             workspaceActiveBackground = "rgba(49, 50, 68, 0.8)",
-            workspaceActiveBorder = "rgba(255, 255, 255, 0.3)",
+            workspaceActiveBorder = "rgba(255, 255, 255, 0.6)",
+            workspaceBorderSize = 4,
             onBottom = false,
             autoDrag = true,
             showNewWorkspace = false,
             vertical = true,
-            fitWindows = false,
+            fitWindows = true,
             scaleWorkspace = true,
             stageGap = 50,
             stageMargin = 100,
             stageBlur = true,
-            stageDim = "rgba(0, 5, 8, 0.2)"
+            stageDim = "rgba(0, 5, 8, 0.3)",
+            stageRounding = 20,
+            showPanel = 0
             -- Add other overview settings here
         }
     }

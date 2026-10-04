@@ -6,15 +6,17 @@ import Quickshell
 Item {
     id: brightnessWidgetRoot
 
-    implicitWidth: 20
-    implicitHeight: 20
-    Layout.preferredWidth: 20
-    Layout.preferredHeight: 20
-    Layout.alignment: Qt.AlignHCenter
+    implicitWidth: 24
+    implicitHeight: 24
+    Layout.preferredWidth: 24
+    Layout.preferredHeight: 24
+    Layout.alignment: Qt.AlignVCenter
 
     property string fontFamily: "JetBrainsMono Nerd Font Mono"
     property color fgColor: "#fff7e5"
     property color accentColor: "#ebd9b9"
+    property int iconSize: 31
+    property int offsetY: -2 // Realistische offset voor een horizontale bar
 
     property int currentBrightness: 50
     property bool nightlightActive: false
@@ -22,7 +24,6 @@ Item {
     signal clicked
     signal rightClicked
 
-    // Bepaal het dynamische icoon in 4 stappen (zon vs maan)
     readonly property string icon: {
         let step = Math.min(3, Math.floor(currentBrightness / 25.01));
         if (nightlightActive) {
@@ -39,11 +40,14 @@ Item {
         text: brightnessWidgetRoot.icon
         color: brightnessWidgetRoot.nightlightActive ? brightnessWidgetRoot.accentColor : brightnessWidgetRoot.fgColor
         font.family: brightnessWidgetRoot.fontFamily
-        font.pixelSize: 28
+        font.pixelSize: brightnessWidgetRoot.iconSize
+
+        // Gecorrigeerde referentie naar brightnessWidgetRoot
+        anchors.verticalCenterOffset: brightnessWidgetRoot.offsetY
 
         Behavior on color {
             ColorAnimation {
-                duration: 150
+                duration: 15
             }
         }
     }

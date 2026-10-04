@@ -21,7 +21,7 @@ ColumnLayout {
             text: clockRoot.timeStr.charAt(index)
             color: index < 2 ? clockRoot.fgColor : clockRoot.mutedColor
             font.family: clockRoot.fontFamily
-            font.pixelSize: 22
+            font.pixelSize: 25
             font.weight: 600
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
