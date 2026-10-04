@@ -13,7 +13,7 @@ import "./modules/services"
 ShellRoot {
     id: root
 
-    readonly property color barBg: '#76000207'
+    readonly property color barBg: '#60000207'
     readonly property color fg: '#fff7e5'
     readonly property color accent: '#ebd9b9'
     readonly property color borderCol: "#2cffffff"
@@ -49,7 +49,7 @@ ShellRoot {
 
         PanelWindow {
             id: sidebarPanel
-
+            visible: !Hyprland.overviewActive
             required property var modelData
 
             property bool popoutOpen: false

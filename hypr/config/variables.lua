@@ -2,6 +2,7 @@
 
 TERMINAL        = "ghostty"
 FILE_MANAGER    = "nautilus"
+-- BROWSER         = "/home/alberic/.local/bin/helium-0.16.2.1-x86_64.AppImage"
 BROWSER         = "zen-browser"
 EDITOR          = "zeditor"
 CALCULATOR      = "noctalia msg panel-toggle samuelskovbakke/calculator-plus:panel"

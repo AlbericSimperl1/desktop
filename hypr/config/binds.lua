@@ -2,6 +2,7 @@ local mainMod = "SUPER"
 local noctCall = "noctalia msg "
 local launchPrefix = "uwsm app -- "
 
+
 -- 1. Maak de workspaces aan (Rules)
 
 ---------------------------
@@ -47,6 +48,17 @@ end
 -- Move & Resize with mouse
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag())
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize())
+-- hl.bind("SUPER +SHIFT + TAB", function()
+--     hl.plugin.overview.toggle()
+-- end, { description = "Toggle Hyprspace overview" })
+-- hl.bind("SUPER +SHIFT + TAB", hl.dsp.exec_cmd("~/.config/hypr/scripts/hyprspace.sh"))
+hl.bind("SUPER + SHIFT + TAB", function()
+    -- 1. Toggle de zichtbaarheid van je Quickshell bar
+    os.execute("quickshell msg 'bar.visible = !bar.visible' &")
+
+    -- 2. Toggle Hyprspace overview
+    hl.plugin.overview.toggle()
+end, { description = "Toggle Hyprspace overview & Quickshell bar" })
 
 -- Zoom
 local function zoomfunction(value)
@@ -91,12 +103,15 @@ hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd(launchPrefix .. EDITOR))
 hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd(launchPrefix .. CALCULATOR))
 hl.bind("XF86Calculator", hl.dsp.exec_cmd(launchPrefix .. CALCULATOR))
 hl.bind(mainMod .. " + SHIFT + Return", hl.dsp.exec_cmd(launchPrefix .. BROWSER))
+-- hl.bind(mainMod .. " + SHIFT + Return", hl.dsp.exec_cmd(helium))
 hl.bind("CONTROL + SHIFT + Escape", hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(noctCall .. "settings-toggle"))
 -- hl.bind("Print", hl.dsp.exec_cmd(noctCall .. "screenshot-region"))
 
 hl.bind(mainMod .. " + X", hl.dsp.exec_cmd(noctCall .. "panel-toggle control-center"))
-hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("~/.config/hypr/scripts/rofi.sh"))
+-- hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("~/.config/hypr/scripts/rofi.sh"))
+hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("vicinae toggle"))
+
 hl.bind(mainMod .. " + period", hl.dsp.exec_cmd(noctCall .. "panel-toggle launcher /emo"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd(noctCall .. "session lock"))
 hl.bind(mainMod .. " + ALT + C", hl.dsp.exec_cmd(noctCall .. "panel-toggle session"))

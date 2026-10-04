@@ -10,7 +10,7 @@ ColumnLayout {
     Layout.alignment: Qt.AlignHCenter
 
     // 10 workspaces (1 t/m 9 en 0) zoals op de afbeelding
-    property int persistentCount: 10
+    property int persistentCount: 6
 
     Repeater {
         model: wsColumn.persistentCount
@@ -43,11 +43,11 @@ ColumnLayout {
 
             color: {
                 if (isActive) {
-                    return Qt.rgba(0, 0, 0, 0.40); // Actieve achtergrond
+                    return Qt.rgba(0, 0, 0, 0.50); // Actieve achtergrond
                 } else if (hovered) {
-                    return Qt.rgba(0, 0, 0, 0.25);
+                    return Qt.rgba(0, 0, 0, 0.35);
                 } else if (hasWindows) {
-                    return Qt.rgba(0, 0, 0, 0.15); // Achtergrond voor geopende vensters
+                    return Qt.rgba(0, 0, 0, 0.20); // Achtergrond voor geopende vensters
                 } else {
                     return "transparent"; // Geen box voor lege workspaces
                 }

@@ -15,3 +15,25 @@ local launchPrefix = "uwsm app -- "
 --         },
 --     },
 -- })
+
+hl.config({
+    plugin = {
+        overview = {
+            panelColor = "rgba(0, 5, 8, 0.0)",
+            panelBorderColor = "rgba(49, 50, 68, 0.0)",
+            workspaceActiveBackground = "rgba(49, 50, 68, 0.8)",
+            workspaceActiveBorder = "rgba(255, 255, 255, 0.3)",
+            onBottom = false,
+            autoDrag = true,
+            showNewWorkspace = false,
+            vertical = true,
+            fitWindows = false,
+            scaleWorkspace = true,
+            stageGap = 50,
+            stageMargin = 100,
+            stageBlur = true,
+            stageDim = "rgba(0, 5, 8, 0.2)"
+            -- Add other overview settings here
+        }
+    }
+})

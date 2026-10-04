@@ -8,6 +8,6 @@ hl.workspace_rule({ workspace = "name:gaming", monitor = PRIMARY_MONITOR, defaul
 -- hl.workspace_rule({ workspace = "5", monitor = MONITOR2, default = true, persistent = true })
 -- hl.workspace_rule({ workspace = "6", monitor = MONITOR2, default = true, persistent = true })
 -- Maak workspaces simpel en universeel
-for i = 1, 9 do
+for i = 1, 6 do
     hl.workspace_rule({ workspace = tostring(i), persistent = true })
 end
