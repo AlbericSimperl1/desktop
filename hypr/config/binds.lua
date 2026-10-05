@@ -49,27 +49,47 @@ end
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag())
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize())
 
+hl.bind(mainMod .. " + W", function() hl.plugin.overview.toggle() end)
 
+-- local last_super_press = 0
+-- local double_tap_window = 0.01
+-- local overview_is_open = false
 
-local last_super_press = 0
-local double_tap_window = 0.015
-local overview_is_open = false
+-- hl.bind("Super_L", function()
+--     local current_time = os.clock()
+--
+--     if (current_time - last_super_press) < double_tap_window then
+--         -- Toggle Hyprspace overview
+--         hl.plugin.overview.toggle()
+--
+--         -- Update status & stuur expliciet 'open' of 'close' naar Quickshell
+--         overview_is_open = not overview_is_open
+--
+--         last_super_press = 0
+--     else
+--         last_super_press = current_time
+--     end
+-- end, { description = "Toggle Hyprspace overview op dubbele Super-klik" })
 
-hl.bind("Super_L", function()
-    local current_time = os.clock()
-
-    if (current_time - last_super_press) < double_tap_window then
-        -- Toggle Hyprspace overview
-        hl.plugin.overview.toggle()
-
-        -- Update status & stuur expliciet 'open' of 'close' naar Quickshell
-        overview_is_open = not overview_is_open
-
-        last_super_press = 0
-    else
-        last_super_press = current_time
-    end
-end, { description = "Toggle Hyprspace overview op dubbele Super-klik" })
+-- hl.bind("Super_L", function()
+--     local current_time = os.clock()
+--
+--     if overview_is_open then
+--         -- Enkele klik: sluit de overview direct als deze al open is
+--         hl.plugin.overview.toggle()
+--         overview_is_open = false
+--         last_super_press = 0
+--     else
+--         -- Dubbele klik: open de overview alleen bij een snelle tweede druk
+--         if (current_time - last_super_press) < double_tap_window then
+--             hl.plugin.overview.toggle()
+--             overview_is_open = true
+--             last_super_press = 0
+--         else
+--             last_super_press = current_time
+--         end
+--     end
+-- end, { description = "Open overview met dubbele Super, sluit met enkele Super" })
 
 -- Zoom
 local function zoomfunction(value)
