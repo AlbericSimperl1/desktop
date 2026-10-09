@@ -1,3 +1,4 @@
+// quickshell/modules/bar/SidebarContent.qml
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import Quickshell
@@ -21,6 +22,7 @@ Item {
     signal wifiClicked(real clickX)
     signal notificationsClicked(real clickX)
     signal powerClicked(real clickX)
+    signal brightnessClicked(real clickX) // <-- TOEGEVOEGD
 
     height: 34
     implicitHeight: barRoot.height
@@ -48,8 +50,17 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         spacing: 22
 
+        // --- BRIGHTNESS WIDGET ---
         Brightness {
+            id: brightnessWidget
             Layout.alignment: Qt.AlignVCenter
+            fontFamily: barRoot.fontFamily
+            fgColor: barRoot.fgColor
+
+            onClicked: {
+                let mapped = brightnessWidget.mapToItem(barRoot.parent, 0, 0);
+                barRoot.brightnessClicked(mapped.x + brightnessWidget.width / 2);
+            }
         }
 
         Item {

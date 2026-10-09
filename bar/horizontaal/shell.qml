@@ -6,12 +6,6 @@ import Quickshell.Hyprland
 import Quickshell.Services.Mpris
 import Quickshell.Wayland
 
-// import "./modules"
-// import "./modules/components"
-// import "./modules/bar"
-// import "./modules/panels"
-// import "./modules/services"
-
 ShellRoot {
     id: root
 
@@ -88,7 +82,8 @@ ShellRoot {
                 }
             }
 
-            readonly property real contentNeededHeight: activePanel === "media" ? mediaPanel.implicitHeight : activePanel === "bluetooth" ? bluetoothPanel.neededHeight : activePanel === "notifications" ? notificationPanel.neededHeight : activePanel === "wifi" ? wifiPanel.neededHeight : activePanel === "power" ? powerPanel.neededHeight : 0
+            // 1. AANGEPAST: brightnessPanel.neededHeight toegevoegd
+            readonly property real contentNeededHeight: activePanel === "media" ? mediaPanel.implicitHeight : activePanel === "bluetooth" ? bluetoothPanel.neededHeight : activePanel === "notifications" ? notificationPanel.neededHeight : activePanel === "wifi" ? wifiPanel.neededHeight : activePanel === "power" ? powerPanel.neededHeight : activePanel === "brightness" ? brightnessPanel.neededHeight : 0
             readonly property real panelH: Math.min(root.panelMaxHeight, Math.max(root.panelMinHeight, contentNeededHeight + 16))
 
             screen: modelData
@@ -196,6 +191,8 @@ ShellRoot {
                         onWifiClicked: clickX => sidebarPanel.togglePanel("wifi", clickX)
                         onNotificationsClicked: clickX => sidebarPanel.togglePanel("notifications", clickX)
                         onPowerClicked: clickX => sidebarPanel.togglePanel("power", clickX)
+                        onBrightnessClicked: clickX => sidebarPanel.togglePanel("brightness", clickX)
+                        // 2. TOEGEVOEGD
                     }
 
                     Rectangle {
@@ -254,6 +251,16 @@ ShellRoot {
                                 id: powerPanel
                                 anchors.fill: parent
                                 visible: sidebarPanel.activePanel === "power"
+                                fgColor: root.fg
+                                accentColor: root.accent
+                                fontFamily: root.fontFamily
+                            }
+
+                            // 3. TOEGEVOEGD: BrightnessPanel instantie
+                            BrightnessPanel {
+                                id: brightnessPanel
+                                anchors.fill: parent
+                                visible: sidebarPanel.activePanel === "brightness"
                                 fgColor: root.fg
                                 accentColor: root.accent
                                 fontFamily: root.fontFamily
