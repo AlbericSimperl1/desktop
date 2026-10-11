@@ -8,15 +8,15 @@ Item {
 
     implicitWidth: 24
     implicitHeight: 24
-    Layout.preferredWidth: 24
+    Layout.preferredWidth: 18
     Layout.preferredHeight: 24
     Layout.alignment: Qt.AlignVCenter
 
     property string fontFamily: "JetBrainsMono Nerd Font Mono"
     property color fgColor: "#fff7e5"
     property color accentColor: "#ebd9b9"
-    property int iconSize: 31
-    property int offsetY: -2 // Realistische offset voor een horizontale bar
+    property int iconSize: 29
+    property int offsetY: -1 // Realistische offset voor een horizontale bar
 
     property int currentBrightness: 50
     property bool nightlightActive: false

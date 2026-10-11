@@ -9,31 +9,31 @@ import Quickshell.Wayland
 ShellRoot {
     id: root
 
-    property bool overviewActive: true
+    // property bool overviewActive: true
 
-    IpcHandler {
-        target: "overview"
+    // IpcHandler {
+    //     target: "overview"
 
-        function toggle(): void {
-            root.overviewActive = !root.overviewActive;
-        }
+    //     function toggle(): void {
+    //         root.overviewActive = !root.overviewActive;
+    //     }
 
-        function open(): void {
-            root.overviewActive = true;
-        }
+    //     function open(): void {
+    //         root.overviewActive = true;
+    //     }
 
-        function close(): void {
-            root.overviewActive = false;
-        }
-    }
+    //     function close(): void {
+    //         root.overviewActive = false;
+    //     }
+    // }
 
-    readonly property color barBg: '#00000207'
+    readonly property color barBg: '#20000207'
     readonly property color fg: '#fff7e5'
     readonly property color accent: '#ebd9b9'
     readonly property color borderCol: "#2cffffff"
     readonly property string fontFamily: "mononoki"
 
-    readonly property int barHeight: 34
+    readonly property int barHeight: 24
     readonly property int marginSize: 0
     readonly property int barRadius: 0
 

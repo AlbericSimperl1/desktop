@@ -49,7 +49,7 @@ end
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag())
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize())
 
-hl.bind(mainMod .. " + W", function() hl.plugin.overview.toggle() end)
+-- hl.bind(mainMod .. " + W", function() hl.plugin.overview.toggle() end)
 
 -- local last_super_press = 0
 -- local double_tap_window = 0.01
@@ -225,3 +225,7 @@ hl.bind(mainMod .. " + CONTROL + mouse_down", hl.dsp.focus({ workspace = "m+1" }
 -- Special workspace (scratchpad)
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special" }))
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special())
+
+
+hl.bind("SUPER + CONTROL + W", function() hl.plugin.hymission.stage_toggle() end)
+hl.bind("SUPER + W", hl.plugin.hymission.toggle)

@@ -14,5 +14,5 @@ require("config.windowrules")
 require("config.workspaces")
 require("config.plugins")
 
--- HyprMod managed settings
--- require("hyprland-gui")
+
+hl.permission("/usr/(bin|local/bin)/hyprpm", "plugin", "allow")

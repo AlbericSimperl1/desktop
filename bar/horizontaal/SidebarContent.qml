@@ -24,7 +24,7 @@ Item {
     signal powerClicked(real clickX)
     signal brightnessClicked(real clickX) // <-- TOEGEVOEGD
 
-    height: 34
+    height: 24
     implicitHeight: barRoot.height
     anchors.top: parent.top
     anchors.left: parent.left
@@ -32,7 +32,7 @@ Item {
     anchors.leftMargin: 18
     anchors.rightMargin: 18
 
-    Ws2 {
+    Ws {
         anchors.centerIn: parent
         anchors.verticalCenter: parent.verticalCenter
     }
@@ -48,12 +48,13 @@ Item {
     RowLayout {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 22
+        spacing: 18
 
         // --- BRIGHTNESS WIDGET ---
         Brightness {
             id: brightnessWidget
             Layout.alignment: Qt.AlignVCenter
+
             fontFamily: barRoot.fontFamily
             fgColor: barRoot.fgColor
 
@@ -104,7 +105,7 @@ Item {
                     text: "󰎈"
                     color: barRoot.fgColor
                     font.family: barRoot.fontFamily
-                    font.pixelSize: 28 + 3
+                    font.pixelSize: 26
                 }
             }
 
@@ -123,7 +124,7 @@ Item {
             text: ""
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
-            font.pixelSize: 25 + 3
+            font.pixelSize: 24
             Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
@@ -141,7 +142,7 @@ Item {
             text: "󰤨"
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
-            font.pixelSize: 24 + 10
+            font.pixelSize: 29
             Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
@@ -159,7 +160,7 @@ Item {
             text: "⏻"
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
-            font.pixelSize: 25 + 3
+            font.pixelSize: 25
             Layout.alignment: Qt.AlignVCenter
 
             MouseArea {

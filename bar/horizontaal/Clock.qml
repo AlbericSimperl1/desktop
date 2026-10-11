@@ -8,17 +8,15 @@ RowLayout {
     property color fgColor: "#fff7e5"
     property color mutedColor: Qt.rgba(1, 0.95, 0.82, 0.78)
     property string fontFamily: "mononoki"
-    property int fs: 20
+    property int fs: 19
 
     spacing: 8
     Layout.alignment: Qt.AlignVCenter
 
     // Tijd in HH:mm formaat (24-uursweergave)
-    readonly property string timeStr: Qt.formatDateTime(clockTimer.currentDate, "HH:mm")
+    readonly property string timeStr: Qt.formatDateTime(clockTimer.currentDate, "HH.mm")
 
-    // Datum in 'dag d maand' formaat (gebruik "dddd d MMMM" voor voluit geschreven namen)
-    readonly property string dateStr: Qt.formatDateTime(clockTimer.currentDate, "  ddd d MMM").toUpperCase()
-
+    readonly property string dateStr: clockTimer.currentDate.toLocaleDateString(Qt.locale("nl_NL"), " ddd d MMM").toLowerCase()
     Text {
         text: clockRoot.timeStr
         color: clockRoot.fgColor

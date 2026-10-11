@@ -15,27 +15,27 @@ import "./modules/services"
 ShellRoot {
     id: root
 
-    // Zichtbaarheid van de sidebar
-    property bool overviewActive: false
+    // // Zichtbaarheid van de sidebar
+    // property bool overviewActive: false
 
-    // Ontvang expliciete status-updates via IPC
-    IpcHandler {
-        target: "overview"
+    // // Ontvang expliciete status-updates via IPC
+    // IpcHandler {
+    //     target: "overview"
 
-        function toggle(): void {
-            root.overviewActive = !root.overviewActive;
-        }
+    //     function toggle(): void {
+    //         root.overviewActive = !root.overviewActive;
+    //     }
 
-        function open(): void {
-            root.overviewActive = true;
-        }
+    //     function open(): void {
+    //         root.overviewActive = true;
+    //     }
 
-        function close(): void {
-            root.overviewActive = false;
-        }
-    }
+    //     function close(): void {
+    //         root.overviewActive = false;
+    //     }
+    // }
 
-    readonly property color barBg: '#00000207'
+    readonly property color barBg: '#50000207'
     readonly property color fg: '#fff7e5'
     readonly property color accent: '#ebd9b9'
     readonly property color borderCol: "#2cffffff"
