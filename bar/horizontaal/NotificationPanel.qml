@@ -79,7 +79,7 @@ Item {
             }
 
             Repeater {
-                model: ["clear", "dnd", "close"]
+                model: ["dnd", "clear"]
 
                 delegate: Rectangle {
                     id: hb
@@ -187,6 +187,246 @@ Item {
             }
         }
 
+        //         // ---------------- List ----------------
+        //         Item {
+        //             Layout.fillWidth: true
+        //             Layout.fillHeight: true
+        //
+        //             Flickable {
+        //                 id: flick
+        //                 anchors.fill: parent
+        //                 anchors.rightMargin: 8
+        //                 clip: true
+        //                 contentWidth: width
+        //                 contentHeight: listColumn.height
+        //                 boundsBehavior: Flickable.StopAtBounds
+        //                 flickableDirection: Flickable.VerticalFlick
+        //
+        //                 Column {
+        //                     id: listColumn
+        //                     width: flick.width
+        //                     spacing: 10
+        //
+        //                     Repeater {
+        //                         model: root.items
+        //
+        //                         delegate: Rectangle {
+        //                             id: card
+        //                             required property var modelData
+        //                             readonly property var n: modelData
+        //                             readonly property bool expanded: Notifications.expandedKey === n.key
+        //                             readonly property bool hasActions: n.actions !== undefined && n.actions.length > 0
+        //
+        //                             width: listColumn.width
+        //                             implicitHeight: cardCol.implicitHeight + 24
+        //                             height: implicitHeight
+        //                             radius: 6
+        //                             color: cardMa.containsMouse ? "#1affffff" : root.cardColor
+        //                             border.width: 1
+        //                             border.color: n.urgency === 2 ? root.dangerColor : root.lineColor
+        //
+        //                             MouseArea {
+        //                                 id: cardMa
+        //                                 anchors.fill: parent
+        //                                 hoverEnabled: true
+        //                                 acceptedButtons: Qt.LeftButton | Qt.RightButton
+        //                                 onClicked: mouse => {
+        //                                     if (mouse.button === Qt.RightButton)
+        //                                         Notifications.invokeDefault(card.n.key);
+        //                                     else
+        //                                         Notifications.toggleExpand(card.n.key);
+        //                                 }
+        //                             }
+        //
+        //                             Column {
+        //                                 id: cardCol
+        //                                 x: 12
+        //                                 y: 12
+        //                                 width: parent.width - 24
+        //                                 spacing: 8
+        //
+        //                                 // header row: icon, app • time, delete
+        //                                 RowLayout {
+        //                                     width: parent.width
+        //                                     height: 36
+        //                                     spacing: 10
+        //
+        //                                     Rectangle {
+        //                                         Layout.preferredWidth: 36
+        //                                         Layout.preferredHeight: 36
+        //                                         radius: 6
+        //                                         color: "#40000000"
+        //                                         clip: true
+        //
+        //                                         Image {
+        //                                             id: appImg
+        //                                             anchors.fill: parent
+        //                                             anchors.margins: 3
+        //                                             source: card.n.icon
+        //                                             fillMode: Image.PreserveAspectFit
+        //                                             asynchronous: true
+        //                                             sourceSize.width: 72
+        //                                             sourceSize.height: 72
+        //                                             visible: status === Image.Ready
+        //                                         }
+        //
+        //                                         Text {
+        //                                             anchors.centerIn: parent
+        //                                             visible: appImg.status !== Image.Ready
+        //                                             text: root.icBell
+        //                                             color: root.fgColor
+        //                                             font.family: root.iconFont
+        //                                             font.pixelSize: 20
+        //                                         }
+        //                                     }
+        //
+        //                                     Text {
+        //                                         Layout.fillWidth: true
+        //                                         Layout.alignment: Qt.AlignVCenter
+        //                                         text: (card.n.appName !== "" ? card.n.appName + " • " : "• ") + Notifications.timeAgo(card.n.time, Notifications.now)
+        //                                         color: root.dimColor
+        //                                         font.family: root.fontFamily
+        //                                         font.pixelSize: 12
+        //                                         elide: Text.ElideRight
+        //                                     }
+        //
+        //                                     Item {
+        //                                         Layout.preferredWidth: 26
+        //                                         Layout.preferredHeight: 26
+        //                                         Layout.alignment: Qt.AlignVCenter
+        //
+        //                                         Text {
+        //                                             anchors.centerIn: parent
+        //                                             text: root.icTrash
+        //                                             color: delMa.containsMouse ? root.dangerColor : root.dimColor
+        //                                             font.family: root.iconFont
+        //                                             font.pixelSize: 16
+        //                                         }
+        //
+        //                                         MouseArea {
+        //                                             id: delMa
+        //                                             anchors.fill: parent
+        //                                             hoverEnabled: true
+        //                                             cursorShape: Qt.PointingHandCursor
+        //                                             onClicked: Notifications.remove(card.n.key)
+        //                                         }
+        //                                     }
+        //                                 }
+        //
+        //                                 // title
+        //                                 Text {
+        //                                     visible: card.n.summary !== ""
+        //                                     width: parent.width
+        //                                     text: card.n.summary
+        //                                     color: root.fgColor
+        //                                     font.family: root.fontFamily
+        //                                     font.pixelSize: 14
+        //                                     font.bold: true
+        //                                     wrapMode: Text.Wrap
+        //                                     maximumLineCount: card.expanded ? 20 : 2
+        //                                     elide: Text.ElideRight
+        //                                 }
+        //
+        //                                 // body
+        //                                 Text {
+        //                                     visible: card.n.body !== ""
+        //                                     width: parent.width
+        //                                     text: card.n.body
+        //                                     color: root.dimColor
+        //                                     font.family: root.fontFamily
+        //                                     font.pixelSize: 13
+        //                                     wrapMode: Text.Wrap
+        //                                     maximumLineCount: card.expanded ? 1000 : 3
+        //                                     elide: Text.ElideRight
+        //                                 }
+        //
+        //                                 // actions
+        //                                 RowLayout {
+        //                                     visible: card.hasActions
+        //                                     width: parent.width
+        //                                     spacing: 8
+        //
+        //                                     Repeater {
+        //                                         model: card.hasActions ? card.n.actions : []
+        //
+        //                                         delegate: Rectangle {
+        //                                             id: actBtn
+        //                                             required property var modelData
+        //                                             visible: modelData.text !== ""
+        //                                             Layout.fillWidth: true
+        //                                             Layout.preferredHeight: 30
+        //                                             radius: 4
+        //                                             color: actMa.containsMouse ? "#22ffffff" : "transparent"
+        //                                             border.width: 1
+        //                                             border.color: actMa.containsMouse ? root.highlightColor : root.lineColor
+        //
+        //                                             Text {
+        //                                                 anchors.centerIn: parent
+        //                                                 width: parent.width - 12
+        //                                                 horizontalAlignment: Text.AlignHCenter
+        //                                                 text: actBtn.modelData.text
+        //                                                 color: actMa.containsMouse ? root.highlightColor : root.fgColor
+        //                                                 font.family: root.fontFamily
+        //                                                 font.pixelSize: 13
+        //                                                 elide: Text.ElideRight
+        //                                             }
+        //
+        //                                             MouseArea {
+        //                                                 id: actMa
+        //                                                 anchors.fill: parent
+        //                                                 hoverEnabled: true
+        //                                                 cursorShape: Qt.PointingHandCursor
+        //                                                 onClicked: Notifications.invoke(card.n.key, actBtn.modelData.identifier)
+        //                                             }
+        //                                         }
+        //                                     }
+        //                                 }
+        //                             }
+        //                         }
+        //                     }
+        //
+        //                     // empty state
+        //                     Item {
+        //                         visible: root.items.length === 0
+        //                         width: listColumn.width
+        //                         height: 170
+        //
+        //                         Column {
+        //                             anchors.centerIn: parent
+        //                             spacing: 10
+        //
+        //                             Text {
+        //                                 anchors.horizontalCenter: parent.horizontalCenter
+        //                                 text: root.icBell
+        //                                 color: root.dimColor
+        //                                 font.family: root.iconFont
+        //                                 font.pixelSize: 38
+        //                             }
+        //
+        //                             Text {
+        //                                 anchors.horizontalCenter: parent.horizontalCenter
+        //                                 text: "No notifications"
+        //                                 color: root.dimColor
+        //                                 font.family: root.fontFamily
+        //                                 font.pixelSize: 16
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //
+        //             // scrollbar
+        //             Rectangle {
+        //                 visible: flick.contentHeight > flick.height + 1
+        //                 x: parent.width - 4
+        //                 y: flick.visibleArea.yPosition * flick.height
+        //                 width: 3
+        //                 height: Math.max(24, flick.visibleArea.heightRatio * flick.height)
+        //                 radius: 2
+        //                 color: "#55ffffff"
+        //             }
+        //         }
+
         // ---------------- List ----------------
         Item {
             Layout.fillWidth: true
@@ -195,7 +435,7 @@ Item {
             Flickable {
                 id: flick
                 anchors.fill: parent
-                anchors.rightMargin: 8
+                anchors.rightMargin: 0
                 clip: true
                 contentWidth: width
                 contentHeight: listColumn.height
@@ -415,15 +655,16 @@ Item {
                 }
             }
 
-            // scrollbar
+            // scrollbar — overlapt de rechterrand van de Flickable
             Rectangle {
                 visible: flick.contentHeight > flick.height + 1
-                x: parent.width - 4
+                x: parent.width - 3
                 y: flick.visibleArea.yPosition * flick.height
                 width: 3
                 height: Math.max(24, flick.visibleArea.heightRatio * flick.height)
                 radius: 2
                 color: "#55ffffff"
+                z: 2
             }
         }
     }
