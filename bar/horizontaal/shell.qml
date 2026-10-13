@@ -170,7 +170,7 @@ ShellRoot {
                             activePlayer: root.activePlayer
                             fontFamily: root.fontFamily
                             fgColor: root.fg
-                            isMediaOpen: sidebarPanel.popoutOpen && sidebarPanel.activePanel === "media"
+                            activePanel: sidebarPanel.popoutOpen ? sidebarPanel.activePanel : "none"
 
                             onMediaClicked: clickX => sidebarPanel.togglePanel("media", clickX)
                             onBluetoothClicked: clickX => sidebarPanel.togglePanel("bluetooth", clickX)
@@ -205,7 +205,7 @@ ShellRoot {
                                     fontFamily: root.fontFamily
                                 }
 
-                                BluetoothPanel {
+                                BluetoothPanel2 {
                                     id: bluetoothPanel
                                     anchors.fill: parent
                                     visible: sidebarPanel.activePanel === "bluetooth"

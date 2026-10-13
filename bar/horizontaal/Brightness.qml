@@ -16,15 +16,19 @@ Item {
     property color fgColor: "#fff7e5"
     property color accentColor: "#ebd9b9"
     property int iconSize: 29
-    property int offsetY: -1 // Realistische offset voor een horizontale bar
+    property int offsetY: -1
 
     property int currentBrightness: 50
     property bool nightlightActive: false
+    property bool isOpen: false
 
     signal clicked
     signal rightClicked
 
     readonly property string icon: {
+        if (isOpen)
+            return "󰅀";
+
         let step = Math.min(3, Math.floor(currentBrightness / 25.01));
         if (nightlightActive) {
             let moonIcons = ["󰽤", "󰽥", "󰽦", "󰽢"];
@@ -40,10 +44,9 @@ Item {
         text: brightnessWidgetRoot.icon
         color: brightnessWidgetRoot.nightlightActive ? brightnessWidgetRoot.accentColor : brightnessWidgetRoot.fgColor
         font.family: brightnessWidgetRoot.fontFamily
-        font.pixelSize: brightnessWidgetRoot.iconSize
+        font.pixelSize: brightnessWidgetRoot.isOpen ? 22 : brightnessWidgetRoot.iconSize
 
-        // Gecorrigeerde referentie naar brightnessWidgetRoot
-        anchors.verticalCenterOffset: brightnessWidgetRoot.offsetY
+        anchors.verticalCenterOffset: brightnessWidgetRoot.isOpen ? 0 : brightnessWidgetRoot.offsetY
 
         Behavior on color {
             ColorAnimation {

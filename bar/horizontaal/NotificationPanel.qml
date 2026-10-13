@@ -10,7 +10,7 @@ Item {
     property color dimColor: "#b3fff7e5"
     property color lineColor: "#2effffff"
     property color cardColor: "#12ffffff"
-    property color highlightColor: "#f0b840"
+    property color highlightColor: '#7ffff6e3'
     property color dangerColor: "#ff5f5f"
     property string fontFamily: "mononoki"
     property string iconFont: "JetBrainsMono Nerd Font Mono"
@@ -71,7 +71,7 @@ Item {
 
             Text {
                 text: "Notifications"
-                color: root.highlightColor
+                color: root.fgColor
                 font.family: root.fontFamily
                 font.pixelSize: 17
                 font.bold: true

@@ -12,7 +12,9 @@ Item {
     property var activePlayer: null
     property string fontFamily: "JetBrainsMono Nerd Font Mono"
     property color fgColor: "#fff7e5"
-    property bool isMediaOpen: false
+
+    // Actief paneel: "media" | "bluetooth" | "wifi" | "notifications" | "power" | "brightness" | "none"
+    property string activePanel: "none"
 
     signal mediaClicked(real clickX)
     signal bluetoothClicked(real clickX)
@@ -28,6 +30,8 @@ Item {
     anchors.right: parent.right
     anchors.leftMargin: 18
     anchors.rightMargin: 18
+
+    readonly property string chevron: "󰅀"
 
     Ws {
         anchors.centerIn: parent
@@ -54,6 +58,7 @@ Item {
 
             fontFamily: barRoot.fontFamily
             fgColor: barRoot.fgColor
+            isOpen: barRoot.activePanel === "brightness"
 
             onClicked: {
                 let mapped = brightnessWidget.mapToItem(barRoot.parent, 0, 0);
@@ -61,17 +66,19 @@ Item {
             }
         }
 
+        // --- MEDIA WIDGET ---
         Item {
             id: mediaWidget
             Layout.alignment: Qt.AlignVCenter
             implicitWidth: 22
             implicitHeight: 22
 
+            readonly property bool isOpen: barRoot.activePanel === "media"
             readonly property string artUrl: barRoot.activePlayer && barRoot.activePlayer.trackArtUrl ? barRoot.activePlayer.trackArtUrl : ""
 
             Item {
                 anchors.fill: parent
-                opacity: barRoot.isMediaOpen ? 0 : 1
+                opacity: mediaWidget.isOpen ? 0 : 1
 
                 Image {
                     id: mediaArt
@@ -106,9 +113,19 @@ Item {
                 }
             }
 
+            Text {
+                anchors.centerIn: parent
+                visible: mediaWidget.isOpen
+                text: barRoot.chevron
+                color: barRoot.fgColor
+                font.family: barRoot.fontFamily
+                font.pixelSize: 22
+            }
+
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
+                hoverEnabled: true
                 onClicked: {
                     let mapped = mediaWidget.mapToItem(barRoot.parent, 0, 0);
                     barRoot.mediaClicked(mapped.x + mediaWidget.width / 2);
@@ -116,17 +133,20 @@ Item {
             }
         }
 
+        // --- BLUETOOTH WIDGET ---
         Text {
             id: bluetoothWidget
-            text: ""
+            readonly property bool isOpen: barRoot.activePanel === "bluetooth"
+            text: isOpen ? barRoot.chevron : ""
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
-            font.pixelSize: 24
+            font.pixelSize: isOpen ? 22 : 24
             Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
+                hoverEnabled: true
                 onClicked: {
                     let mapped = bluetoothWidget.mapToItem(barRoot.parent, 0, 0);
                     barRoot.bluetoothClicked(mapped.x + bluetoothWidget.width / 2);
@@ -134,17 +154,20 @@ Item {
             }
         }
 
+        // --- WIFI WIDGET ---
         Text {
             id: wifiWidget
-            text: "󰤨"
+            readonly property bool isOpen: barRoot.activePanel === "wifi"
+            text: isOpen ? barRoot.chevron : "󰤨"
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
-            font.pixelSize: 29
+            font.pixelSize: isOpen ? 22 : 29
             Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
+                hoverEnabled: true
                 onClicked: {
                     let mapped = wifiWidget.mapToItem(barRoot.parent, 0, 0);
                     barRoot.wifiClicked(mapped.x + wifiWidget.width / 2);
@@ -152,37 +175,40 @@ Item {
             }
         }
 
-        // --- NOTIFICATIONS (left click: panel, right click: DND) ---
+        // --- NOTIFICATIONS WIDGET ---
         Item {
             id: notifWidget
             Layout.alignment: Qt.AlignVCenter
-            implicitWidth: 26
+            implicitWidth: 16
             implicitHeight: 24
+
+            readonly property bool isOpen: barRoot.activePanel === "notifications"
 
             Text {
                 anchors.centerIn: parent
-                text: Notifications.dndEnabled ? "\udb80\udc9b" : "\udb80\udc9a"
+                text: notifWidget.isOpen ? barRoot.chevron : (Notifications.dndEnabled ? "\udb80\udc9b" : "\udb80\udc9a")
                 color: barRoot.fgColor
                 font.family: barRoot.fontFamily
-                font.pixelSize: 25
+                font.pixelSize: notifWidget.isOpen ? 22 : 25
             }
 
             Rectangle {
-                visible: Notifications.count > 0 && !Notifications.dndEnabled
+                visible: Notifications.count > 0 && !Notifications.dndEnabled && !notifWidget.isOpen
                 anchors.top: parent.top
                 anchors.right: parent.right
-                anchors.topMargin: 1
-                anchors.rightMargin: 2
-                width: 7
-                height: 7
+                anchors.topMargin: 2
+                anchors.rightMargin: 1
+                width: 5
+                height: 5
                 radius: 4
-                color: "#f0b840"
+                color: "#88ff4444"
             }
 
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 cursorShape: Qt.PointingHandCursor
+                hoverEnabled: true
                 onClicked: mouse => {
                     if (mouse.button === Qt.RightButton) {
                         Notifications.toggleDnd();
@@ -194,17 +220,20 @@ Item {
             }
         }
 
+        // --- POWER WIDGET ---
         Text {
             id: powerWidget
-            text: "⏻"
+            readonly property bool isOpen: barRoot.activePanel === "power"
+            text: isOpen ? barRoot.chevron : "⏻"
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
-            font.pixelSize: 25
+            font.pixelSize: isOpen ? 22 : 25
             Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
+                hoverEnabled: true
                 onClicked: {
                     let mapped = powerWidget.mapToItem(barRoot.parent, 0, 0);
                     barRoot.powerClicked(mapped.x + powerWidget.width / 2);
