@@ -31,19 +31,19 @@ RowLayout {
 
             property bool hovered: false
 
-            implicitWidth: 24
-            implicitHeight: 24
-            radius: 6
+            implicitWidth: 20.45
+            implicitHeight: 19
+            radius: 4
 
             Layout.alignment: Qt.AlignVCenter
 
             color: {
                 if (isActive) {
-                    return Qt.rgba(255, 255, 255, 0.25);
+                    return Qt.rgba(255, 255, 255, 0.20);
                 } else if (hovered) {
-                    return Qt.rgba(255, 255, 255, 0.17);
+                    return Qt.rgba(255, 255, 255, 0.15);
                 } else if (hasWindows) {
-                    return Qt.rgba(255, 255, 255, 0.12);
+                    return Qt.rgba(255, 255, 255, 0.10);
                 } else {
                     return "transparent";
                 }
@@ -58,9 +58,9 @@ RowLayout {
             Text {
                 anchors.centerIn: parent
                 text: pill.displayText
-                font.pixelSize: 18
+                font.pixelSize: 17
 
-                color: pill.isActive ? "#fff7e5" : "#d8dee9"
+                color: pill.isActive ? "#fff7e5" : Qt.rgba(255, 255, 255, 0.40)
 
                 Behavior on color {
                     ColorAnimation {

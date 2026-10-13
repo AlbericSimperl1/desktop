@@ -1,12 +1,9 @@
-// quickshell/modules/bar/SidebarContent.qml
+// bar/horizontaal/SidebarContent.qml
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import Quickshell
 import Quickshell.Hyprland
 import Qt5Compat.GraphicalEffects
-
-import ".."
-import "../components"
 
 Item {
     id: barRoot
@@ -22,7 +19,7 @@ Item {
     signal wifiClicked(real clickX)
     signal notificationsClicked(real clickX)
     signal powerClicked(real clickX)
-    signal brightnessClicked(real clickX) // <-- TOEGEVOEGD
+    signal brightnessClicked(real clickX)
 
     height: 24
     implicitHeight: barRoot.height
@@ -121,7 +118,7 @@ Item {
 
         Text {
             id: bluetoothWidget
-            text: ""
+            text: ""
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
             font.pixelSize: 24
@@ -151,6 +148,48 @@ Item {
                 onClicked: {
                     let mapped = wifiWidget.mapToItem(barRoot.parent, 0, 0);
                     barRoot.wifiClicked(mapped.x + wifiWidget.width / 2);
+                }
+            }
+        }
+
+        // --- NOTIFICATIONS (left click: panel, right click: DND) ---
+        Item {
+            id: notifWidget
+            Layout.alignment: Qt.AlignVCenter
+            implicitWidth: 26
+            implicitHeight: 24
+
+            Text {
+                anchors.centerIn: parent
+                text: Notifications.dndEnabled ? "\udb80\udc9b" : "\udb80\udc9a"
+                color: barRoot.fgColor
+                font.family: barRoot.fontFamily
+                font.pixelSize: 25
+            }
+
+            Rectangle {
+                visible: Notifications.count > 0 && !Notifications.dndEnabled
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.topMargin: 1
+                anchors.rightMargin: 2
+                width: 7
+                height: 7
+                radius: 4
+                color: "#f0b840"
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                cursorShape: Qt.PointingHandCursor
+                onClicked: mouse => {
+                    if (mouse.button === Qt.RightButton) {
+                        Notifications.toggleDnd();
+                    } else {
+                        let mapped = notifWidget.mapToItem(barRoot.parent, 0, 0);
+                        barRoot.notificationsClicked(mapped.x + notifWidget.width / 2);
+                    }
                 }
             }
         }

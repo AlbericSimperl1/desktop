@@ -154,3 +154,19 @@ hl.layer_rule({
     ignore_alpha = 0.1,
     no_anim = true
 })
+hl.layer_rule({
+    match = { namespace = "ghostty" },
+    blur = true,
+    ignore_alpha = 0.1,
+    no_anim = true
+})
+local calendar_class = "rencal" -- Vervang door de class uit `hyprctl activewindow`
+
+local windowrulev2 = {
+    match = { namespace = "rencal" },
+    float = true
+}
+
+return {
+    windowrulev2 = windowrulev2,
+}

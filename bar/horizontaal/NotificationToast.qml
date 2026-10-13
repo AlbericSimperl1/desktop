@@ -1,15 +1,14 @@
-// quickshell/modules/panels/NotificationToast.qml
+// bar/horizontaal/NotificationToast.qml
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
-import "../services"
 
 PanelWindow {
     id: toastWindow
-    visible: Notifications.activeToasts.count > 0
-    implicitWidth: 300
-    implicitHeight: 600
+    visible: Notifications.toasts.count > 0
+    implicitWidth: 340
+    implicitHeight: 700
     color: "transparent"
     exclusiveZone: 0
 
@@ -22,68 +21,130 @@ PanelWindow {
         right: true
     }
     margins {
-        top: 16
+        top: 8
         right: 16
     }
 
-    ColumnLayout {
+    // only the toasts themselves catch input
+    mask: Region {
+        item: toastCol
+    }
+
+    Column {
+        id: toastCol
         width: parent.width
         spacing: 8
 
         Repeater {
-            model: Notifications.activeToasts
+            model: Notifications.toasts
 
             delegate: Rectangle {
-                required property string hash
+                id: toast
+                required property string tid
+                required property string appName
+                required property string icon
                 required property string title
                 required property string body
                 required property int timeout
+                required property int token
 
-                Layout.fillWidth: true
-                implicitHeight: col.implicitHeight + 16
-                radius: 10
-                color: "#f0000207"
-                border.color: "#ebd9b9"
-                border.width: 0
+                width: toastCol.width
+                height: toastRow.implicitHeight + 24
+                radius: 6
+                color: "#f2121210"
+                border.width: 1
+                border.color: "#2effffff"
 
-                Column {
-                    id: col
-                    anchors.fill: parent
-                    anchors.margins: 8
-                    spacing: 4
-
-                    Text {
-                        text: title
-                        color: "#fff7e5"
-                        font.family: "mononoki"
-                        font.pixelSize: 13
-                        font.bold: true
-                        width: parent.width
-                        elide: Text.ElideRight
-                    }
-
-                    Text {
-                        visible: body !== ""
-                        text: body
-                        color: "#a0fff7e5"
-                        font.family: "mononoki"
-                        font.pixelSize: 11
-                        width: parent.width
-                        wrapMode: Text.Wrap
-                        maximumLineCount: 3
-                        elide: Text.ElideRight
-                    }
-                }
+                onTokenChanged: life.restart()
 
                 Timer {
-                    interval: timeout > 0 ? timeout : 4000
+                    id: life
+                    interval: toast.timeout > 0 ? toast.timeout : 5000
                     running: true
-                    onTriggered: Notifications.dismissToast(hash)
+                    onTriggered: Notifications.dismissToast(toast.tid)
                 }
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: Notifications.dismissToast(hash)
+                    onClicked: Notifications.dismissToast(toast.tid)
+                }
+
+                RowLayout {
+                    id: toastRow
+                    x: 12
+                    y: 12
+                    width: parent.width - 24
+                    spacing: 10
+
+                    Rectangle {
+                        Layout.preferredWidth: 36
+                        Layout.preferredHeight: 36
+                        Layout.alignment: Qt.AlignTop
+                        radius: 6
+                        color: "#40000000"
+                        clip: true
+
+                        Image {
+                            id: toastImg
+                            anchors.fill: parent
+                            anchors.margins: 3
+                            source: toast.icon
+                            fillMode: Image.PreserveAspectFit
+                            asynchronous: true
+                            sourceSize.width: 72
+                            sourceSize.height: 72
+                            visible: status === Image.Ready
+                        }
+
+                        Text {
+                            anchors.centerIn: parent
+                            visible: toastImg.status !== Image.Ready
+                            text: "\udb80\udc9a"
+                            color: "#fff7e5"
+                            font.family: "JetBrainsMono Nerd Font Mono"
+                            font.pixelSize: 20
+                        }
+                    }
+
+                    Column {
+                        Layout.fillWidth: true
+                        spacing: 4
+
+                        Text {
+                            visible: toast.appName !== ""
+                            width: parent.width
+                            text: toast.appName
+                            color: "#b3fff7e5"
+                            font.family: "mononoki"
+                            font.pixelSize: 11
+                            elide: Text.ElideRight
+                        }
+
+                        Text {
+                            visible: toast.title !== ""
+                            width: parent.width
+                            text: toast.title
+                            color: "#fff7e5"
+                            font.family: "mononoki"
+                            font.pixelSize: 13
+                            font.bold: true
+                            wrapMode: Text.Wrap
+                            maximumLineCount: 2
+                            elide: Text.ElideRight
+                        }
+
+                        Text {
+                            visible: toast.body !== ""
+                            width: parent.width
+                            text: toast.body
+                            color: "#b3fff7e5"
+                            font.family: "mononoki"
+                            font.pixelSize: 12
+                            wrapMode: Text.Wrap
+                            maximumLineCount: 3
+                            elide: Text.ElideRight
+                        }
+                    }
                 }
             }
         }

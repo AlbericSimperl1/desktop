@@ -58,7 +58,7 @@ hl.config({
             -- hover_relayout_duration = 80, -- standaard 140
             vim_keys = 1,
             -- stage_transition_ms = 150, -- standaard 300
-            -- hide_bar_animation = 0,    -- bar verdwijnt direct
+            hide_bar_animation = 0, -- bar verdwijnt direct
 
             -- Optie A: natuurlijke indeling, vult lege ruimte beter
             layout_engine = "natural",
