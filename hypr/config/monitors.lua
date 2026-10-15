@@ -13,3 +13,10 @@ hl.monitor({
     position = "auto",
     scale    = 1,
 })
+
+hl.monitor({
+    output   = "vm",
+    mode     = "2880x2160@60",
+    position = "0x0",
+    scale    = 1,
+})

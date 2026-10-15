@@ -31,7 +31,7 @@ Item {
     anchors.leftMargin: 18
     anchors.rightMargin: 18
 
-    readonly property string chevron: "󰅀"
+    readonly property string chevron: "󰅃"
 
     Ws {
         anchors.centerIn: parent
@@ -51,70 +51,97 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         spacing: 18
 
-        // --- BRIGHTNESS WIDGET ---
-        Brightness {
-            id: brightnessWidget
-            Layout.alignment: Qt.AlignVCenter
-
-            fontFamily: barRoot.fontFamily
-            fgColor: barRoot.fgColor
-            isOpen: barRoot.activePanel === "brightness"
-
-            onClicked: {
-                let mapped = brightnessWidget.mapToItem(barRoot.parent, 0, 0);
-                barRoot.brightnessClicked(mapped.x + brightnessWidget.width / 2);
-            }
-        }
-
         // --- MEDIA WIDGET ---
-        Item {
+        RowLayout {
             id: mediaWidget
             Layout.alignment: Qt.AlignVCenter
-            implicitWidth: 22
-            implicitHeight: 22
+            Layout.rightMargin: -9
+            spacing: 8
 
             readonly property bool isOpen: barRoot.activePanel === "media"
-            readonly property string artUrl: barRoot.activePlayer && barRoot.activePlayer.trackArtUrl ? barRoot.activePlayer.trackArtUrl : ""
+            readonly property bool hasPlayer: barRoot.activePlayer !== null
+            readonly property string artUrl: hasPlayer && barRoot.activePlayer.trackArtUrl ? barRoot.activePlayer.trackArtUrl : ""
+            readonly property string titleText: hasPlayer && barRoot.activePlayer.trackTitle ? barRoot.activePlayer.trackTitle : ""
+            readonly property string artistText: hasPlayer && barRoot.activePlayer.trackArtist ? barRoot.activePlayer.trackArtist : ""
 
+            visible: hasPlayer || isOpen
+
+            readonly property string truncatedTitle: {
+                let t = titleText;
+                if (t.length > 25)
+                    return t.substring(0, 25) + "…";
+                return t;
+            }
+
+            readonly property string combinedText: {
+                if (titleText === "" && artistText === "")
+                    return "";
+                if (artistText === "")
+                    return truncatedTitle;
+                if (titleText === "")
+                    return artistText;
+                return artistText + " - " + truncatedTitle;
+            }
+
+            // Album art (of fallback icoon)
             Item {
-                anchors.fill: parent
-                opacity: mediaWidget.isOpen ? 0 : 1
+                id: artBox
+                Layout.alignment: Qt.AlignVCenter
+                implicitWidth: 20
+                implicitHeight: 20
 
-                Image {
-                    id: mediaArt
+                Item {
                     anchors.fill: parent
-                    source: mediaWidget.artUrl
-                    fillMode: Image.PreserveAspectCrop
-                    asynchronous: true
-                    visible: false
-                }
+                    opacity: mediaWidget.isOpen ? 0 : 1
 
-                Rectangle {
-                    id: maskRect
-                    anchors.fill: parent
-                    radius: 6
-                    visible: false
-                }
+                    Image {
+                        id: mediaArt
+                        anchors.fill: parent
+                        source: mediaWidget.artUrl
+                        fillMode: Image.PreserveAspectCrop
+                        asynchronous: true
+                        visible: false
+                    }
 
-                OpacityMask {
-                    anchors.fill: parent
-                    source: mediaArt
-                    maskSource: maskRect
-                    visible: mediaArt.status === Image.Ready && mediaWidget.artUrl !== ""
-                }
+                    Rectangle {
+                        id: maskRect
+                        anchors.fill: parent
+                        radius: 6
+                        visible: false
+                    }
 
-                Text {
-                    anchors.centerIn: parent
-                    visible: mediaArt.status !== Image.Ready || mediaWidget.artUrl === ""
-                    text: "󰎈"
-                    color: barRoot.fgColor
-                    font.family: barRoot.fontFamily
-                    font.pixelSize: 26
+                    OpacityMask {
+                        anchors.fill: parent
+                        source: mediaArt
+                        maskSource: maskRect
+                        visible: mediaArt.status === Image.Ready && mediaWidget.artUrl !== ""
+                    }
+
+                    Text {
+                        anchors.centerIn: parent
+                        visible: mediaArt.status !== Image.Ready || mediaWidget.artUrl === ""
+                        text: "󰎈"
+                        color: barRoot.fgColor
+                        font.family: barRoot.fontFamily
+                        font.pixelSize: 26
+                    }
                 }
             }
 
+            // Artiest - Titel (één regel, verborgen wanneer paneel open is)
             Text {
-                anchors.centerIn: parent
+                Layout.alignment: Qt.AlignVCenter
+                visible: !mediaWidget.isOpen && mediaWidget.combinedText !== ""
+                text: mediaWidget.combinedText
+                color: barRoot.fgColor
+                font.family: barRoot.fontFamily
+                font.pixelSize: 14
+                elide: Text.ElideRight
+            }
+
+            // Chevron wanneer paneel open is
+            Text {
+                Layout.alignment: Qt.AlignVCenter
                 visible: mediaWidget.isOpen
                 text: barRoot.chevron
                 color: barRoot.fgColor
@@ -140,7 +167,7 @@ Item {
             text: isOpen ? barRoot.chevron : ""
             color: barRoot.fgColor
             font.family: barRoot.fontFamily
-            font.pixelSize: isOpen ? 22 : 24
+            font.pixelSize: isOpen ? 22 : 22
             Layout.alignment: Qt.AlignVCenter
 
             MouseArea {
@@ -217,6 +244,20 @@ Item {
                         barRoot.notificationsClicked(mapped.x + notifWidget.width / 2);
                     }
                 }
+            }
+        }
+
+        Brightness {
+            id: brightnessWidget
+            Layout.alignment: Qt.AlignVCenter
+
+            fontFamily: barRoot.fontFamily
+            fgColor: barRoot.fgColor
+            isOpen: barRoot.activePanel === "brightness"
+
+            onClicked: {
+                let mapped = brightnessWidget.mapToItem(barRoot.parent, 0, 0);
+                barRoot.brightnessClicked(mapped.x + brightnessWidget.width / 2);
             }
         }
 

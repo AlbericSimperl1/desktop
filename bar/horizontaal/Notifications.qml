@@ -24,9 +24,9 @@ Singleton {
     readonly property string _dir: Quickshell.env("HOME") + "/.local/state/quickshell"
     readonly property string _file: _dir + "/notifications.json"
     readonly property var _toastTimeouts: ({
-            "0": 1800,
-            "1": 4000,
-            "2": 10000
+            "0": 1200,
+            "1": 2400,
+            "2": 3600
         })
 
     ListModel {

@@ -137,7 +137,6 @@ hl.bind(mainMod .. " + SHIFT + Return", hl.dsp.exec_cmd(launchPrefix .. BROWSER)
 -- hl.bind(mainMod .. " + SHIFT + Return", hl.dsp.exec_cmd(helium))
 hl.bind("CONTROL + SHIFT + Escape", hl.dsp.exec_cmd(launchPrefix .. TERMINAL .. " -e btop"))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd(noctCall .. "settings-toggle"))
--- hl.bind("Print", hl.dsp.exec_cmd(noctCall .. "screenshot-region"))
 
 hl.bind(mainMod .. " + X", hl.dsp.exec_cmd(noctCall .. "panel-toggle control-center"))
 -- hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("~/.config/hypr/scripts/rofi.sh"))
@@ -151,7 +150,6 @@ hl.bind("SUPER + g", function()
     hl.plugin.scrolloverview.overview("toggle all")
 end)
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("spotify"))
-
 ---------------------------
 ---- HARDWARE CONTROLS ----
 ---------------------------
@@ -184,7 +182,7 @@ hl.bind(mainMod .. " + SHIFT + F", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggl
 -- Screen Capture
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("hyprpicker -a -n"))
 hl.bind("Print", hl.dsp.exec_cmd("/home/alberic/.local/bin/rishot"))
-hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd(noctCall .. "screenshot-fullscreen"))
+
 
 -- Theming and Wallpaper
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd(noctCall .. "panel-toggle wallpaper"))

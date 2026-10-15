@@ -27,7 +27,7 @@ Item {
 
     readonly property string icon: {
         if (isOpen)
-            return "󰅀";
+            return "󰅃";
 
         let step = Math.min(3, Math.floor(currentBrightness / 25.01));
         if (nightlightActive) {
